@@ -17,9 +17,9 @@
 ## About
 
 Welcome! This repository is part of the `ROS 2 Networking Redefined: Deep Dive into RMW Zenoh` workshops, scheduled to take place at several ROSCons in 2025:
-  - 🇬🇧 🏴󠁧󠁢󠁳󠁣󠁴󠁿 [ROSCon UK](https://roscon.org.uk/2025/), on September 16th
-  - 🇸🇬 [ROSCon Singapore](https://roscon.ros.org/2025/), on October 27th
-  - [ROSCon FR & DE](https://roscon.ros.org/fr/2025/), on November 18th
+  - [ROSCon UK](https://roscon.org.uk/2025/) 🇬🇧 🏴󠁧󠁢󠁳󠁣󠁴󠁿, on September 16th
+  - [ROSCon Singapore](https://roscon.ros.org/2025/) 🇸🇬, on October 27th
+  - [ROSCon FR & DE](https://roscon.ros.org/fr/2025/) 🇫🇷 🇩🇪, on November 18th
 It contains all the resources you’ll need to get started with `rmw_zenoh`, the Zenoh middleware for `ROS 2`.
 
 In this hands-on workshop, you’ll explore how to leverage Zenoh as a ROS 2 middleware (RMW) layer. Whether you're new to Zenoh or looking to deepen your understanding of it, this workshop is designed to give you practical insights through simple demonstrations.
