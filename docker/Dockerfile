@@ -60,8 +60,9 @@ RUN apt-get install -y --no-install-recommends \
 # Cleanup
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Copy encironment and just files
-COPY justfile /home/ubuntu/
-COPY workshop_env.bash /home/ubuntu/
-# Make ~/.bashrc to load ~/workshop_env.bash
-RUN echo 'source /home/ubuntu/workshop_env.bash' >> /home/ubuntu/.bashrc
+# Copy environment and other files
+COPY workshop_env.bash justfile rt_factor_avg.py /home/ubuntu/
+
+# Make ~/.bashrc to load ~/workshop_env.bash and just completions
+RUN echo 'source /home/ubuntu/workshop_env.bash' >> /home/ubuntu/.bashrc \
+    && echo 'eval "$(just --completions bash)"' >> /home/ubuntu/.bashrc

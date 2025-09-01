@@ -1,15 +1,40 @@
+###
+### ROS launch/run commands
+###
+
 # Run a Zenoh router
 router:
    ros2 run rmw_zenoh_cpp rmw_zenohd
 
-# Run Neobotix ROX simulation
+# Launch Neobotix ROX simulation
 rox_simu:
    ros2 launch rox_bringup bringup_sim_launch.py arm_type:=ur10 scanner_type:=psenscan imu_enable:=True d435_enable:=True
 
-# Run Neobotix ROX navigation stack (in simulation)
+# Launch Neobotix ROX navigation stack (in simulation)
 rox_nav2:
    ros2 launch rox_navigation navigation.launch.py rox_type:=argo use_sim_time:=True use_rviz:=False
 
-# Run RViz with Nav2 configuration for Neobotix ROX
+# Launch RViz with Nav2 configuration for Neobotix ROX
 rviz_nav2:
    ros2 launch nav2_bringup rviz_launch.py
+
+
+###
+### Network monitoring commands
+###
+
+# Average Gazebo real time factor
+rt_factor:
+   python3 /home/ubuntu/rt_factor_avg.py
+
+# top (show commands, user only)
+top:
+   top -c -u ubuntu
+
+# iftop on localhost only (to filter-out gazebo) and without VNC
+iftop_lo_zenoh:
+   sudo iftop -B -P -i lo -f "not port 5901 and (host 127.0.0.1 or host ::1)"
+
+# Find which PID/command is using a port number
+find_port PORT:
+   netstat -tulnp 2>/dev/null | grep ':{{PORT}}' | sed 's/.*LISTEN *//'
