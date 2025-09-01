@@ -38,7 +38,9 @@ RUN mkdir -p /home/ubuntu/rmw_zenoh/src \
 
 # Build Neobotix ROX simulation packages
 RUN apt-get install -y --no-install-recommends \
-        xterm python3-colcon-common-extensions ros-${ROS_DISTRO}-robotiq-description \
+        xterm python3-colcon-common-extensions \
+        ros-${ROS_DISTRO}-robotiq-description \
+        ros-${ROS_DISTRO}-realsense2-description \
     && mkdir -p /home/ubuntu/rox_ws/src \
     && cd /home/ubuntu/rox_ws/src \
     && git clone --branch $ROS_DISTRO     https://github.com/neobotix/rox.git \
@@ -58,6 +60,8 @@ RUN apt-get install -y --no-install-recommends \
 # Cleanup
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Make ~/.bashrc to load ~/workshop_env.bash
+# Copy encironment and just files
+COPY justfile /home/ubuntu/
 COPY workshop_env.bash /home/ubuntu/
+# Make ~/.bashrc to load ~/workshop_env.bash
 RUN echo 'source /home/ubuntu/workshop_env.bash' >> /home/ubuntu/.bashrc

@@ -1,0 +1,15 @@
+# Run a Zenoh router
+router:
+   ros2 run rmw_zenoh_cpp rmw_zenohd
+
+# Run Neobotix ROX simulation
+rox_simu:
+   ros2 launch rox_bringup bringup_sim_launch.py arm_type:=ur10 scanner_type:=psenscan imu_enable:=True d435_enable:=True
+
+# Run Neobotix ROX navigation stack (in simulation)
+rox_nav2:
+   ros2 launch rox_navigation navigation.launch.py rox_type:=argo use_sim_time:=True use_rviz:=False
+
+# Run RViz with Nav2 configuration for Neobotix ROX
+rviz_nav2:
+   ros2 launch nav2_bringup rviz_launch.py
