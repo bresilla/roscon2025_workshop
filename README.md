@@ -17,9 +17,11 @@
 ## About
 
 Welcome! This repository is part of the `ROS 2 Networking Redefined: Deep Dive into RMW Zenoh` workshops, scheduled to take place at several ROSCons in 2025:
-  - [ROSCon UK](https://roscon.org.uk/2025/) 🇬🇧 🏴󠁧󠁢󠁳󠁣󠁴󠁿, on September 16th
-  - [ROSCon Singapore](https://roscon.ros.org/2025/) 🇸🇬, on October 27th
-  - [ROSCon FR & DE](https://roscon.ros.org/fr/2025/) 🇫🇷 🇩🇪, on November 18th
+
+* [ROSCon UK](https://roscon.org.uk/2025/) 🇬🇧 🏴󠁧󠁢󠁳󠁣󠁴󠁿, on September 16th
+* [ROSCon Singapore](https://roscon.ros.org/2025/) 🇸🇬, on October 27th
+* [ROSCon FR & DE](https://roscon.ros.org/fr/2025/) 🇫🇷 🇩🇪, on November 18th
+
 It contains all the resources you’ll need to get started with `rmw_zenoh`, the Zenoh middleware for `ROS 2`.
 
 In this hands-on workshop, you’ll explore how to leverage Zenoh as a ROS 2 middleware (RMW) layer. Whether you're new to Zenoh or looking to deepen your understanding of it, this workshop is designed to give you practical insights through simple demonstrations.
@@ -53,18 +55,33 @@ Alternatively, you can clone this repository and build the image yourself using 
 
 The image includes ROS 2 Jazzy Jalisco (core) with pre-installed demo ROS 2 packages. The ROS environment, ready to use `rmw_zenoh` and demos is automatically set up when you start a bash session (for details see the `~/workshop_env.bash` file which is sourced by `~/.bashrc`).
 
-
 ### Using the Docker Container
 
 The docker directory contains several scripts to help manage the container:
 
 * Run [`./docker/create_container.sh`](docker/create_container.sh) to create a container named `roscon2025_workshop`, or use the `$CONTAINER_NAME` environment variable to specify a custom name.
-  Once created, you can open a VNC view on container's desktop on http://localhost:6080/ 
+  Once created, you can open a VNC view on container's desktop on http://localhost:6080/
 * Run [`./docker/login_container.sh`](docker/login_container.sh) to start a bash shell inside the container
 * Run [`./docker/restart_container.sh`](docker/restart_container.sh) to restart the container
 * Run [`./docker/stop_container.sh`](docker/stop_container.sh) to stop the container
 * Run [`./docker/rm_container.sh`](docker/rm_container.sh) to delete the container
 * Run [`./docker/rm_image.sh`](docker/rm_image.sh) to delete the Docker image
 
-## Exercises
+### (Optional) Using `docker compose` to simplify the process
 
+[docker compose](https://docs.docker.com/compose/install/) is a tool to running multiple containers at once. We can use this to run two containers for the exercises later.
+
+```bash
+cd docker
+docker compose up
+```
+
+Now you can access two containers with http://localhost:6080/ and http://localhost:6081/
+Stop the containers after finishing the exercises.
+
+```bash
+cd docker
+docker compose down
+```
+
+## Exercises
