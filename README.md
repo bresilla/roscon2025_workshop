@@ -99,3 +99,11 @@ Each container has a `~/container_data` volume bound to your host's `container_v
 ### [Exercise 6 - Adjust the QoS & Priority of topics](exercises/ex-6.md)
 
 ### [Exercise 7 - Traverse the Internet](exercises/ex-7.md)
+
+---
+
+## Acknowledgements
+
+The Dockerfile is based on [Tiryoh/docker-ros2-desktop-vnc](https://github.com/Tiryoh/docker-ros2-desktop-vnc), licensed under the [Apache License 2.0](https://github.com/Tiryoh/docker-ros2-desktop-vnc/blob/c131213eadd7f4f694b94bab349fb287c1daeb11/LICENSE).
+
+The simulation of the [ROX robot](https://www.neobotix-robots.com/products/mobile-robots/mobile-robot-rox) is courtesy of [Neobotix](https://www.neobotix-robots.com/) and comes from [neobotix/rox](https://github.com/neobotix/rox).
