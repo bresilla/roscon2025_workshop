@@ -19,7 +19,7 @@ FROM ${BASE_IMAGE}
 
 # Install usefull tools
 RUN apt-get update && apt upgrade -y && apt-get install -y --no-install-recommends \
-        git wget curl gpg vim nano emacs iputils-ping iproute2 net-tools just
+        git wget curl gpg vim nano emacs iputils-ping iproute2 net-tools just iftop
 
 # Install Nav2 Turtlebot3 demo
 RUN apt-get install -y --no-install-recommends \
