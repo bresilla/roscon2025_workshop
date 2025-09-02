@@ -85,3 +85,17 @@ docker compose down
 ```
 
 ## Exercises
+
+### [Exercise 1 - Navigation2 with rmw_zenoh](exercises/ex-1.md)
+
+### [Exercise 2 - Enable shared memory in rmw_zenoh](exercises/ex-2.md)
+
+### [Exercise 3 - Run rviz2 to visualize the remote robot](exercises/ex-3.md)
+
+### [Exercise 4 - Access Control](exercises/ex-4.md)
+
+### [Exercise 5 - Downsampling](exercises/ex-5.md)
+
+### [Exercise 6 - Adjust the QoS & Priority of topics](exercises/ex-6.md)
+
+### [Exercise 7 - Traverse the Internet](exercises/ex-7.md)

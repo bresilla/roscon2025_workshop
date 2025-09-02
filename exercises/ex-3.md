@@ -6,11 +6,11 @@ It's common to visualize the robot from other host. The exercise will guide you 
 
 ```bash
 # Terminal 1
-ros2 run rmw_zenoh_cpp rmw_zenohd
+just router
 # Terminal 2
-ros2 launch rox_bringup bringup_sim_launch.py
+just rox_simu
 # Terminal 3
-ros2 launch rox_navigation navigation.launch.py use_sim_time:=true
+just rox_nav2
 ```
 
 * Container 2
@@ -18,9 +18,9 @@ ros2 launch rox_navigation navigation.launch.py use_sim_time:=true
 
 ```bash
 # Terminal 1
-ros2 run rmw_zenoh_cpp rmw_zenohd
+just router
 # Terminal 2
-ros2 launch nav2_bringup rviz_launch.py
+just rviz_nav2
 ```
 
 ---

@@ -4,7 +4,7 @@ import re
 import time
 from collections import deque
 
-# Time window for rolling average (secondes)
+# Time window for rolling average (seconds)
 WINDOW_SIZE_SECONDS = 10
 # Display interval (seconds)
 DISPLAY_INTERVAL = 1.0
@@ -21,7 +21,7 @@ def main():
     window = deque(maxlen=MAX_WINDOW)
     last_print = time.time()
 
-    # Start'gz topic' command
+    # Start 'gz topic' command
     process = subprocess.Popen(
         ['gz', 'topic', '-e', '-t', '/world/default/stats'],
         stdout=subprocess.PIPE,
@@ -38,7 +38,7 @@ def main():
                 timestamp = time.time()
                 window.append((timestamp, rtf))
 
-                # Remove old valuse
+                # Remove old values
                 current_time = time.time()
                 while window and (current_time - window[0][0] > WINDOW_SIZE_SECONDS):
                     window.popleft()
