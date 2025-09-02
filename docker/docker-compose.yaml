@@ -8,7 +8,7 @@ services:
       - "7447:7447/tcp"  # Zenoh default port
       - "7447:7447/udp"
     volumes:
-      - ../robot_container/zenoh_confs:/home/ubuntu/zenoh_confs
+      - ../container_volumes/robot_container:/home/ubuntu/container_data
     working_dir: /home/ubuntu
     cap_add:
       - NET_ADMIN
@@ -26,7 +26,7 @@ services:
     ports:
       - "6081:80"  # VNC access to the container's desktop
     volumes:
-      - ../control_container/zenoh_confs:/home/ubuntu/zenoh_confs
+      - ../container_volumes/control_container:/home/ubuntu/container_data
     working_dir: /home/ubuntu
     cap_add:
       - NET_ADMIN

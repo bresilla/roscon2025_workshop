@@ -13,5 +13,8 @@ just rox_nav2
 just rviz_nav2
 ```
 
+The navigation2 is still working even we kill the Zenoh Router. Why?
+Try to restart Zenoh router and rviz2. You can see that everything still works well.
+
 ---
 [Next exercise ➡️](ex-2.md)
