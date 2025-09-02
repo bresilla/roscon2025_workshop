@@ -35,54 +35,54 @@ What's Included:
 
 Get ready to dive into the exciting world of ROS 2 networking with Zenoh!
 
+## Hardware requirements
+
+A laptop on Linux, MacOS or Windows with:
+
+* 8 cores minimum
+* 16 GB RAM minimum
+* 30 GB disk free minimum
+* Docker installed and configured with allocated resources: 8 CPU and 16 GB memory limit
+
+> [!warning]
+>
+> We strongly recommend pulling this Docker image **before your arrival at ROSCon**:
+> ```bash
+> docker pull zettascaletech/roscon2025_workshop
+> ```
+> It is available for both `amd64` and `arm64` architectures.
+
 ## Setup
 
-This workshop runs entirely within Docker containers, so you’ll need a host machine with Docker installed. Both `amd64` and `arm64` architectures are supported.
+Pull this repository and change to its directory:
 
-### Docker image installation
-
-The easiest way to get the image is by pulling it from Docker Hub:
-
-```bash
-docker pull zettascaletech/roscon2025_workshop
+```log
+git clone https://github.com/ZettaScaleLabs/roscon2025_workshop.git
+cd roscon2025_workshop
 ```
 
-Alternatively, you can clone this repository and build the image yourself using the provided `build_image.sh` script. By default, the image will be named roscon2025_workshop, or you can specify a different name by setting the $IMAGE_NAME environment variable.
+This workshop relies on 2 containers with ROS 2 Jazzy and RMW Zenoh installed:
+
+* **robot**: to simulate a robot
+* **control**: a host to control the robot
+
+Run those containers with Docker compose as such:
 
 ```bash
-./docker/build_image.sh
+docker compose up -d
 ```
 
-The image includes ROS 2 Jazzy Jalisco (core) with pre-installed demo ROS 2 packages. The ROS environment, ready to use `rmw_zenoh` and demos is automatically set up when you start a bash session (for details see the `~/workshop_env.bash` file which is sourced by `~/.bashrc`).
+Then you can open 2 VNC connections to each container in a Web browser:
 
-### Using the Docker Container
+* Robot container: http://localhost:6080/
+* Controller container: http://localhost:6081/
 
-The docker directory contains several scripts to help manage the container:
+![Initial setup with 2 browsers](exercises/images/initial_setup.png)
 
-* Run [`./docker/create_container.sh`](docker/create_container.sh) to create a container named `roscon2025_workshop`, or use the `$CONTAINER_NAME` environment variable to specify a custom name.
-  Once created, you can open a VNC view on container's desktop on http://localhost:6080/
-* Run [`./docker/login_container.sh`](docker/login_container.sh) to start a bash shell inside the container
-* Run [`./docker/restart_container.sh`](docker/restart_container.sh) to restart the container
-* Run [`./docker/stop_container.sh`](docker/stop_container.sh) to stop the container
-* Run [`./docker/rm_container.sh`](docker/rm_container.sh) to delete the container
-* Run [`./docker/rm_image.sh`](docker/rm_image.sh) to delete the Docker image
+The 2 containers are based on the same image and are already configured with ROS 2 environment and `RMW_IMPLEMENTATION=rmw_zenoh_cpp`.  
+A [`justfile`](docker/justfile) in home directory defines some commands shorcuts that can be called with `just <command_name>`.  
+Each container has a `~/container_data` volume bound to your host's `container_volumes/robot_container` and `container_volumes/control_container` respectively.
 
-### (Optional) Using `docker compose` to simplify the process
-
-[docker compose](https://docs.docker.com/compose/install/) is a tool to running multiple containers at once. We can use this to run two containers for the exercises later.
-
-```bash
-cd docker
-docker compose up
-```
-
-Now you can access two containers with http://localhost:6080/ and http://localhost:6081/
-Stop the containers after finishing the exercises.
-
-```bash
-cd docker
-docker compose down
-```
 
 ## Exercises
 

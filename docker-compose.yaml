@@ -1,6 +1,10 @@
 services:
   robot:
     image: ${IMAGE_NAME:-zettascaletech/roscon2025_workshop}
+    build:
+      context: ./docker
+      dockerfile: Dockerfile
+    hostname: robot
     stdin_open: true
     tty: true
     ports:
@@ -8,7 +12,7 @@ services:
       - "7447:7447/tcp"  # Zenoh default port
       - "7447:7447/udp"
     volumes:
-      - ../container_volumes/robot_container:/home/ubuntu/container_data
+      - ./container_volumes/robot_container:/home/ubuntu/container_data
     working_dir: /home/ubuntu
     cap_add:
       - NET_ADMIN
@@ -21,12 +25,13 @@ services:
 
   control:
     image: ${IMAGE_NAME:-zettascaletech/roscon2025_workshop}
+    hostname: control
     stdin_open: true
     tty: true
     ports:
       - "6081:80"  # VNC access to the container's desktop
     volumes:
-      - ../container_volumes/control_container:/home/ubuntu/container_data
+      - ./container_volumes/control_container:/home/ubuntu/container_data
     working_dir: /home/ubuntu
     cap_add:
       - NET_ADMIN
