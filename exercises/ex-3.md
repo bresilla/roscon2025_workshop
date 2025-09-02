@@ -14,7 +14,6 @@ just rox_nav2
 ```
 
 * Container 2
-  * TODO: It might be better to use client mode here.
 
 ```bash
 # Terminal 1
@@ -22,6 +21,8 @@ just router
 # Terminal 2
 just rviz_nav2
 ```
+
+You can stop the Zenoh Router and the rviz2 will stop working. That means the ROS messages need to pass through the Zenoh Router.
 
 ---
 [Next exercise ➡️](ex-4.md)
