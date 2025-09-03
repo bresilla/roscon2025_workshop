@@ -42,3 +42,24 @@ iftop_lo_zenoh:
 # Find which PID/command is using a port number
 find_port PORT:
    netstat -tulnp 2>/dev/null | grep ':{{PORT}}' | sed 's/.*LISTEN *//'
+
+###
+### Network quality commands
+###
+
+# Restrain the network quality
+network_limit:
+   # qdisc: Queuing discipline
+   # tbf: Token Bucket Filter
+   # maximum average transmission rate: 100 Mbps
+   # available maximum burst: 200 kbit
+   # maximum time before drop: 50 ms
+   sudo tc qdisc add dev eth0 root handle 1: tbf rate 100mbit burst 200kbit latency 50ms
+   # netem: Network Emulation
+   # delay 20ms 5ms distribution normal: average delay 20 ms with ±5ms and normal distribution
+   # loss rate: 1%
+   sudo tc qdisc add dev eth0 parent 1:1 handle 10: netem delay 20ms 5ms distribution normal loss 1%
+
+# Restore the network quality 
+network_normal:
+   sudo tc qdisc del dev eth0 root
