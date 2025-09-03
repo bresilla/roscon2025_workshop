@@ -8,7 +8,11 @@ Not every topic is important. Some might be large but less significant, while so
 just network_limit
 ```
 
-* Prioritize the topic and adjust the QoS in the config
+* Camera image can't be loaded on the remote rviz2.
+
+* Uncomment the QoS config in the router config and restart the Zenoh Router
+
+* Although it's still lagging, we can see the camera image now.
 
 * Restore the network
 
