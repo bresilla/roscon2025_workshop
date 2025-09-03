@@ -9,15 +9,18 @@ router:
 
 # Launch Neobotix ROX simulation
 rox_simu:
-   ros2 launch rox_bringup bringup_sim_launch.py arm_type:=ur10 scanner_type:=psenscan imu_enable:=True d435_enable:=True
+   ZENOH_SESSION_CONFIG_URI=/home/ubuntu/container_data/zenoh-session.json5 \
+      ros2 launch rox_bringup bringup_sim_launch.py arm_type:=ur10 scanner_type:=psenscan imu_enable:=True d435_enable:=True
 
 # Launch Neobotix ROX navigation stack (in simulation)
 rox_nav2:
-   ros2 launch rox_navigation navigation.launch.py rox_type:=argo use_sim_time:=True use_rviz:=False
+   ZENOH_SESSION_CONFIG_URI=/home/ubuntu/container_data/zenoh-session.json5 \
+      ros2 launch rox_navigation navigation.launch.py rox_type:=argo use_sim_time:=True use_rviz:=False
 
 # Launch RViz with Nav2 configuration for Neobotix ROX
 rviz_nav2:
-   ros2 launch nav2_bringup rviz_launch.py rviz_config:=/home/ubuntu/container_data/rmw_zenoh_demo.rviz
+   ZENOH_SESSION_CONFIG_URI=/home/ubuntu/container_data/zenoh-session.json5 \
+      ros2 launch nav2_bringup rviz_launch.py rviz_config:=/home/ubuntu/container_data/rmw_zenoh_demo.rviz
 
 
 ###
