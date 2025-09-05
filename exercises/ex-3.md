@@ -2,6 +2,27 @@
 
 It's common to visualize the robot from other host. The exercise will guide you how to visualize your robot remotely.
 
+```mermaid
+---
+config:
+  theme: redux
+  look: handDrawn
+  layout: dagre
+---
+graph TD
+subgraph Host
+    subgraph Container A
+        sim1["Gazebo"] <--> zr1["Zenoh Router"]
+        nav1["Navigation2"] <--> zr1
+        sim1 <--> nav1
+    end
+    subgraph Container B
+        rv2["RViz2"] <--> zr2["Zenoh Router"]
+    end
+    zr1 <-- data / discovery --> zr2
+end
+```
+
 * Container 1
 
 ```bash

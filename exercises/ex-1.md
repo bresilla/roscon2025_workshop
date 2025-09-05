@@ -2,6 +2,24 @@
 
 The exercise shows the basic example how to run navigation2 with rmw_zenoh.
 
+```mermaid
+---
+config:
+  theme: redux
+  look: handDrawn
+  layout: dagre
+---
+graph TD
+subgraph Host
+    sim["Gazebo"] -- discovery --> zr["Zenoh Router"]
+    nav["Navigation2"] -- discovery --> zr
+    rv["RViz2"] -- discovery --> zr
+    sim <-- data --> nav
+    sim <-- data --> rv
+    nav <-- data --> rv
+end
+```
+
 ```bash
 # Terminal 1: Run the Zenoh router
 just router

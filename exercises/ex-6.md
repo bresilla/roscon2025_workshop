@@ -2,6 +2,27 @@
 
 Not every topic is important. Some might be large but less significant, while some is very critical. Zenoh supports adding the priority for each topic.
 
+```mermaid
+---
+config:
+  theme: redux
+  look: handDrawn
+  layout: dagre
+---
+graph TD
+subgraph Host
+    subgraph Container A
+        sim1["Gazebo"] <--> zr1["Zenoh Router</br>QoS: Congestion Control & Priority"]
+        nav1["Navigation2"] <--> zr1
+        sim1 <--> nav1
+    end
+    subgraph Container B
+        rv2["RViz2"] <--> zr2["Zenoh Router"]
+    end
+    zr1 <-- emulated limited WiFi network --> zr2
+end
+```
+
 * Emulate the restrained network
 
 ```bash
