@@ -57,11 +57,18 @@ RUN apt-get install -y --no-install-recommends \
     && colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release \
     && rm -fr build/ log/
 
+# Install other ROS usefull packages
+RUN apt-get install -y --no-install-recommends \
+        ros-${ROS_DISTRO}-rclpy \
+        ros-${ROS_DISTRO}-turtlebot3-simulations \
+        ros-${ROS_DISTRO}-turtlebot3-teleop \
+        ros-${ROS_DISTRO}-nav2-bringup
+
 # Cleanup
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Copy environment and other files
-COPY workshop_env.bash justfile rt_factor_avg.py /home/ubuntu/
+COPY workshop_env.bash justfile rt_factor_avg.py camera_latency.py /home/ubuntu/
 
 # Make ~/.bashrc to load ~/workshop_env.bash and just completions
 RUN echo 'source /home/ubuntu/workshop_env.bash' >> /home/ubuntu/.bashrc \

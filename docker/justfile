@@ -8,9 +8,9 @@ router:
       ros2 run rmw_zenoh_cpp rmw_zenohd
 
 # Launch Neobotix ROX simulation
-rox_simu:
+rox_simu *ARGS:
    ZENOH_SESSION_CONFIG_URI=/home/ubuntu/container_data/zenoh-session.json5 \
-      ros2 launch rox_bringup bringup_sim_launch.py arm_type:=ur10 scanner_type:=psenscan imu_enable:=True d435_enable:=True
+      ros2 launch rox_bringup bringup_sim_launch.py arm_type:=ur10 scanner_type:=psenscan imu_enable:=True d435_enable:=True {{ARGS}}
 
 # Launch Neobotix ROX navigation stack (in simulation)
 rox_nav2:
@@ -27,6 +27,11 @@ rviz_nav2:
 ### Network monitoring commands
 ###
 
+# Subscribe to Realsense camera topics ("points" or "image") and print latency statistics
+# WARNING: the ROX simulation must be running with use_wall_time:=True (e.g. `just rox_simu use_wall_time:=True`)
+cam_latency TOPIC='points':
+   python3 /home/ubuntu/camera_latency.py {{TOPIC}}
+
 # Average Gazebo real time factor
 rt_factor:
    python3 /home/ubuntu/rt_factor_avg.py
@@ -42,6 +47,9 @@ iftop_lo_zenoh:
 # Find which PID/command is using a port number
 find_port PORT:
    netstat -tulnp 2>/dev/null | grep ':{{PORT}}' | sed 's/.*LISTEN *//'
+
+
+
 
 ###
 ### Network quality commands
