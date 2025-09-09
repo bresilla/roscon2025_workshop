@@ -77,6 +77,8 @@ Then you can open 2 VNC connections to each container in a Web browser:
 * Robot container: http://localhost:6080/
 * Controller container: http://localhost:6081/
 
+If the sessions are locked, the password is `ubuntu`.
+
 ![Initial setup with 2 browsers](exercises/images/initial_setup.png)
 
 The 2 containers are based on the same image and are already configured with ROS 2 environment and `RMW_IMPLEMENTATION=rmw_zenoh_cpp`.  

@@ -68,7 +68,7 @@ RUN apt-get install -y --no-install-recommends \
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Copy environment and other files
-COPY workshop_env.bash justfile rt_factor_avg.py camera_latency.py /home/ubuntu/
+COPY files_to_copy/ /home/ubuntu/
 
 # Make ~/.bashrc to load ~/workshop_env.bash and just completions
 RUN echo 'source /home/ubuntu/workshop_env.bash' >> /home/ubuntu/.bashrc \

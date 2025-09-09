@@ -4,23 +4,19 @@
 
 # Run a Zenoh router
 router:
-   ZENOH_ROUTER_CONFIG_URI=/home/ubuntu/container_data/zenoh-router.json5 \
-      ros2 run rmw_zenoh_cpp rmw_zenohd
+   ros2 run rmw_zenoh_cpp rmw_zenohd
 
 # Launch Neobotix ROX simulation
 rox_simu *ARGS:
-   ZENOH_SESSION_CONFIG_URI=/home/ubuntu/container_data/zenoh-session.json5 \
-      ros2 launch rox_bringup bringup_sim_launch.py arm_type:=ur10 scanner_type:=psenscan imu_enable:=True d435_enable:=True {{ARGS}}
+   ros2 launch rox_bringup bringup_sim_launch.py arm_type:=ur10 scanner_type:=psenscan imu_enable:=True d435_enable:=True {{ARGS}}
 
 # Launch Neobotix ROX navigation stack (in simulation)
-rox_nav2:
-   ZENOH_SESSION_CONFIG_URI=/home/ubuntu/container_data/zenoh-session.json5 \
-      ros2 launch rox_navigation navigation.launch.py rox_type:=argo use_sim_time:=True use_rviz:=False
+rox_nav2 *ARGS:
+      ros2 launch rox_navigation navigation.launch.py rox_type:=argo use_sim_time:=True use_rviz:=False {{ARGS}}
 
 # Launch RViz with Nav2 configuration for Neobotix ROX
-rviz_nav2:
-   ZENOH_SESSION_CONFIG_URI=/home/ubuntu/container_data/zenoh-session.json5 \
-      ros2 launch nav2_bringup rviz_launch.py rviz_config:=/home/ubuntu/container_data/rmw_zenoh_demo.rviz
+rviz_nav2 *ARGS:
+   ros2 launch nav2_bringup rviz_launch.py rviz_config:=/home/ubuntu/rox_nav2.rviz {{ARGS}}
 
 
 ###
@@ -41,7 +37,7 @@ top:
    top -c -u ubuntu
 
 # iftop on localhost only (to filter-out gazebo) and without VNC
-iftop_lo_zenoh:
+iftop_lo:
    sudo iftop -B -P -i lo -f "not port 5901 and (host 127.0.0.1 or host ::1)"
 
 # Find which PID/command is using a port number
