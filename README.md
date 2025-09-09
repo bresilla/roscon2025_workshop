@@ -88,11 +88,11 @@ Each container has a `~/container_data` volume bound to your host's `container_v
 
 ## Exercises
 
-### [Exercise 1 - Zenoh router and ROS Nodes](exercises/ex-1.md)
+### [Exercise 1 - Zenoh router and ROS nodes](exercises/ex-1.md)
 
-### [Exercise 2 - Navigation2 with rmw_zenoh](exercises/ex-2.md)
+### [Exercise 2 - A complete simulation with Nav2](exercises/ex-2.md)
 
-### [Exercise 3 - Enable shared memory in rmw_zenoh](exercises/ex-3.md)
+### [Exercise 3 - Shared Memory](exercises/ex-3.md)
 
 ### [Exercise 4 - Run rviz2 to visualize the remote robot](exercises/ex-4.md)
 

@@ -1,4 +1,4 @@
-# Exercise 1 - Zenoh router and ROS Nodes
+# Exercise 1 - Zenoh router and ROS nodes
 
 The primary role of the Zenoh router is to act as a discovery service for ROS nodes running on the same host.
 When a node starts, it automatically tries to connect to the local Zenoh router. If the connection fails, the node waits until the router becomes available. The router shares the locators (IP + port) of each node with others, allowing them to automatically establish peer-to-peer connections. Once nodes are connected, they no longer need the router to communicate with each other.

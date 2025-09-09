@@ -1,4 +1,4 @@
-# Exercise 2 - Navigation2 with rmw_zenoh
+# Exercise 2 - A complete simulation with Nav2
 
 In this exercise we will run a Neobotix ROX robot simulation in Gazebo, along with Navigation2 and RViz2.
 
