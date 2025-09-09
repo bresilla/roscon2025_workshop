@@ -92,7 +92,8 @@ jobs:
         if: ${{ inputs.latest }}
         run: |
           set -xe
-          docker manifest create --amend zettascaletech/roscon2025_workshop:latest \
+          docker manifest rm zettascaletech/roscon2025_workshop:latest || true
+          docker manifest create zettascaletech/roscon2025_workshop:latest \
             zettascaletech/roscon2025_workshop-amd64:${{ inputs.tag }} \
             zettascaletech/roscon2025_workshop-arm64:${{ inputs.tag }}
           docker manifest push zettascaletech/roscon2025_workshop:latest
