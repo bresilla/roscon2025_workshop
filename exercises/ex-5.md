@@ -1,8 +1,8 @@
-# Exercise 5 - Downsampling
+# Exercise 4 - Access Control
 
-If we want to monitor a topic and also want to reduce the traffic, downsampling the ROS messages is a good idea. Zenoh can achieve this easily.
+Sometimes we just don't want to expose all the topics to the network for both bandwidth and security issue. The Access Control in Zenoh can help us filter the traffic.
 
-Uncomment the downsampling configuration in the Zenoh Router config on the robot container. Then restart the Zenoh Router. We make the frequency of the camera image (The topic is `camera/image_raw`) drop to 1 Hz. You can see the image on the rviz is obviously lagging.
+Uncomment the ACL configuration in the Zenoh Router config on the robot container. Then restart the Zenoh Router. We don't allow the image topic to pass through the Zenoh Router. You can see that the image on the Rviz will not be updated anymore.
 
 ```mermaid
 ---
@@ -14,7 +14,7 @@ config:
 graph TD
 subgraph Host
     subgraph Container A
-        sim1["Gazebo"] <--> zr1["Zenoh Router</br>Downsampling: 30Hz->1Hz"]
+        sim1["Gazebo"] <--> zr1["Zenoh Router</br>ACL: deny image"]
         nav1["Navigation2"] <--> zr1
         sim1 <--> nav1
     end

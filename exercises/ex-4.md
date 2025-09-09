@@ -1,8 +1,6 @@
-# Exercise 4 - Access Control
+# Exercise 3 - Run rviz2 to visualize the remote robot
 
-Sometimes we just don't want to expose all the topics to the network for both bandwidth and security issue. The Access Control in Zenoh can help us filter the traffic.
-
-Uncomment the ACL configuration in the Zenoh Router config on the robot container. Then restart the Zenoh Router. We don't allow the image topic to pass through the Zenoh Router. You can see that the image on the Rviz will not be updated anymore.
+It's common to visualize the robot from other host. The exercise will guide you how to visualize your robot remotely.
 
 ```mermaid
 ---
@@ -14,16 +12,38 @@ config:
 graph TD
 subgraph Host
     subgraph Container A
-        sim1["Gazebo"] <--> zr1["Zenoh Router</br>ACL: deny image"]
+        sim1["Gazebo"] <--> zr1["Zenoh Router"]
         nav1["Navigation2"] <--> zr1
         sim1 <--> nav1
     end
     subgraph Container B
         rv2["RViz2"] <--> zr2["Zenoh Router"]
     end
-    zr1 <--> zr2
+    zr1 <-- data / discovery --> zr2
 end
 ```
+
+* Container 1
+
+```bash
+# Terminal 1
+just router
+# Terminal 2
+just rox_simu
+# Terminal 3
+just rox_nav2
+```
+
+* Container 2
+
+```bash
+# Terminal 1
+just router
+# Terminal 2
+just rviz_nav2
+```
+
+You can stop the Zenoh Router and the rviz2 will stop working. That means the ROS messages need to pass through the Zenoh Router.
 
 ---
 [Next exercise ➡️](ex-5.md)

@@ -1,6 +1,6 @@
-# Exercise 7 - Traverse the Internet
+# Exercise 6 - Adjust the QoS & Priority of topics
 
-If both your robot and rviz are behind the NAT, it's difficult to connect them together. This is not an issue for Zenoh. We can easily add a Zenoh router to traverse the Internet.
+Not every topic is important. Some might be large but less significant, while some is very critical. Zenoh supports adding the priority for each topic.
 
 ```mermaid
 ---
@@ -12,17 +12,34 @@ config:
 graph TD
 subgraph Host
     subgraph Container A
-        sim1["Gazebo"] <--> zr1["Zenoh Router"]
+        sim1["Gazebo"] <--> zr1["Zenoh Router</br>QoS: Congestion Control & Priority"]
         nav1["Navigation2"] <--> zr1
         sim1 <--> nav1
     end
     subgraph Container B
         rv2["RViz2"] <--> zr2["Zenoh Router"]
     end
+    zr1 <-- emulated limited WiFi network --> zr2
 end
-subgraph Cloud
-    zr3["Zenoh Router"]
-end
-zr1 <-- data / discovery --> zr3
-zr2 <-- data / discovery --> zr3
 ```
+
+* Emulate the restrained network
+
+```bash
+just network_limit
+```
+
+* Camera image can't be loaded on the remote rviz2.
+
+* Uncomment the QoS config in the router config and restart the Zenoh Router
+
+* Although it's still lagging, we can see the camera image now.
+
+* Restore the network
+
+```bash
+just network_normal
+```
+
+---
+[Next exercise ➡️](ex-8.md)
