@@ -1,38 +1,48 @@
-# Exercise 1 - Navigation2 with rmw_zenoh
+# Exercise 2 - Navigation2 with rmw_zenoh
 
-The exercise shows the basic example how to run navigation2 with rmw_zenoh.
+In this exercise we will run a Neobotix ROX robot simulation in Gazebo, along with Navigation2 and RViz2.
 
-```mermaid
----
-config:
-  theme: redux
-  look: handDrawn
-  layout: dagre
----
-graph TD
-subgraph Host
-    sim["Gazebo"] -- discovery --> zr["Zenoh Router"]
-    nav["Navigation2"] -- discovery --> zr
-    rv["RViz2"] -- discovery --> zr
-    sim <-- data --> nav
-    sim <-- data --> rv
-    nav <-- data --> rv
-end
-```
+From now on, all the commands are simplified with the help of `just` tool. It supports completion: in a terminal, type `just` and hit `tab` key twice to see the available commands.  
+All the commands are defined in `~/justfile`. 
 
-```bash
-# Terminal 1: Run the Zenoh router
-just router
-# Terminal 2: Run the simulator
-just rox_simu
-# Terminal 3: Run the navigation
-just rox_nav2
-# Terminal 4: Run the rviz2
-just rviz_nav2
-```
+## Run the simulation
 
-The navigation2 is still working even we kill the Zenoh Router. Why?
-Try to restart Zenoh router and rviz2. You can see that everything still works well.
+In 2 distinct terminals:
+
+1. Start the Zenoh router:  
+   `just router`
+
+2. Start the simulation:  
+   `just rox_simu`
+
+To run the simulation in headless mode (without Gazebo UI), you can run:
+ `just rox_simu headless_simulation:=True`
+
+## Run Navigation2 and RViz
+
+In 2 distinct terminals:
+
+1. Start Navigation2:  
+   `just rox_nav2`
+
+2. Start Rviz:  
+   `just rviz_nav2`
+
+Rviz is configured for Navigation2 and with subscriptions to the Realsense camera (image and points cloud).  
+Once the costmap is shown, click on `Nav2 goal` and draw an arrow to set a navigation goal.
+
+![Initial setup with 2 browsers](images/Navigation2.png)
+
+
+## Get some metrics
+
+We prepared some commands to perform some measurement on this setup:
+
+- `just top` : show the CPU usage with each process command line.
+- `just iftop_lo` : show the traffic over the loopback interface (VNC excluded).
+- `just rt_factor` : show the Gazebo real-time factor
+- `just cam_latency` : subscribe to camera's point cloud or image topics and show average latency.  
+   **WARNING**: you must run the simulation to use the wall time as such: `just rox_simu use_wall_time:=True`. However, with this mode Navigation2 is no longer working.
 
 ---
 [Next exercise ➡️](ex-3.md)
