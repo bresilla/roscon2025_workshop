@@ -1,4 +1,4 @@
-# Exercise 3 - Run rviz2 to visualize the remote robot
+# Exercise 4 - Run rviz2 to visualize the remote robot
 
 It's common to visualize the robot from other host. The exercise will guide you how to visualize your robot remotely.
 
