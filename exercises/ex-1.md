@@ -64,12 +64,12 @@ In both containers, your bash environment automatically sets those environment v
 
 ### Overriding the configuration files
 
-`rmw_zenoh` allows you to override some configuration fields usdefininging the `ZENOH_CONFIG_OVERRIDE` environment variable. These overrides apply to Zenoh sessions and the Zenoh router after the `ZENOH_SESSION_CONFIG_URI` or `ZENOH_ROUTER_CONFIG_URI` (if specified) has been processed.
+`rmw_zenoh` allows you to override some configuration fields defining in the `ZENOH_CONFIG_OVERRIDE` environment variable. These overrides apply to Zenoh sessions and the Zenoh router after the `ZENOH_SESSION_CONFIG_URI` or `ZENOH_ROUTER_CONFIG_URI` (if specified) has been processed.
 
 You can specify multiple key-value pairs using the following syntax:  
 `export ZENOH_CONFIG_OVERRIDE="key/path/to/field1=value1;key/path/to/field2=value2"`
 
-For instance, to configure the multicst scouting and allow the `talker` and `listener` to discover each other without a router:
+For instance, to configure the multicast scouting and allow the `talker` and `listener` to discover each other without a router:
 
 ```bash
 # Run the talker

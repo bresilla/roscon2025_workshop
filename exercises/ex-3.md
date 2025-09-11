@@ -14,13 +14,13 @@ The usage of shared memory with `rmw_zenoh` is fully transparent to your ROS app
 
 To measure the benefit of shared memory, we will first measure the latency of the points cloud publication with the default configuration.
 
-1. Run the router:  
+1. Run the router:
    `just router`
-2. Run the simulation, using wall time (i.e. system clock) for timestamping:  
+2. Run the simulation, using wall time (i.e. system clock) for timestamping:
    `just rox_simu use_wall_time:=True`
-3. Run a Node measuring the points cloud latency:  
+3. Run a Node measuring the points cloud latency:
    `just cam_latency`  
-   You can also measure the images latency running:  
+   You can also measure the images latency running:
    `just cam_latency image`
 
 ## Configuring shared memory

@@ -12,7 +12,7 @@ rox_simu *ARGS:
 
 # Launch Neobotix ROX navigation stack (in simulation)
 rox_nav2 *ARGS:
-      ros2 launch rox_navigation navigation.launch.py rox_type:=argo use_sim_time:=True use_rviz:=False {{ARGS}}
+   ros2 launch rox_navigation navigation.launch.py rox_type:=argo use_sim_time:=True use_rviz:=False {{ARGS}}
 
 # Launch RViz with Nav2 configuration for Neobotix ROX
 rviz_nav2 *ARGS:

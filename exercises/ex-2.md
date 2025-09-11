@@ -9,10 +9,10 @@ All the commands are defined in `~/justfile`.
 
 In 2 distinct terminals:
 
-1. Start the Zenoh router:  
+1. Start the Zenoh router:
    `just router`
 
-2. Start the simulation:  
+2. Start the simulation:
    `just rox_simu`
 
 To run the simulation in headless mode (without Gazebo UI), you can run:
@@ -22,10 +22,10 @@ To run the simulation in headless mode (without Gazebo UI), you can run:
 
 In 2 distinct terminals:
 
-1. Start Navigation2:  
+1. Start Navigation2:
    `just rox_nav2`
 
-2. Start Rviz:  
+2. Start Rviz:
    `just rviz_nav2`
 
 Rviz is configured for Navigation2 and with subscriptions to the Realsense camera (image and points cloud).  
