@@ -55,10 +55,10 @@ find_port PORT:
 network_limit:
    # qdisc: Queuing discipline
    # tbf: Token Bucket Filter
-   # maximum average transmission rate: 10 Mbps
+   # maximum average transmission rate: 20 Mbps
    # available maximum burst: 200 kbit
-   # maximum time before drop: 30 ms
-   sudo tc qdisc add dev eth0 root handle 1: tbf rate 10mbit burst 200kbit latency 30ms
+   # maximum time before drop: 50 ms
+   sudo tc qdisc add dev eth0 root handle 1: tbf rate 20mbit burst 200kbit latency 50ms
 
 # Restore the network quality 
 network_normal:

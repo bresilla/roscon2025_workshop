@@ -1,27 +1,8 @@
 # Exercise 6 - Adjust the QoS & Priority of topics
 
-Not every topic is important. Some might be large but less significant, while some is very critical. Zenoh supports adding the priority for each topic.
-
-```mermaid
----
-config:
-  theme: redux
-  look: handDrawn
-  layout: dagre
----
-graph TD
-subgraph Host
-    subgraph Container A
-        sim1["Gazebo"] <--> zr1["Zenoh Router</br>QoS: Congestion Control & Priority"]
-        nav1["Navigation2"] <--> zr1
-        sim1 <--> nav1
-    end
-    subgraph Container B
-        rv2["RViz2"] <--> zr2["Zenoh Router"]
-    end
-    zr1 <-- emulated limited WiFi network --> zr2
-end
-```
+Some topic is large but less significant. The drop of those data is allowed, but we still want to receive them with low priority.
+However, when the network quality is bad, the data can't even send out because some of the fragments is dropped.
+We can adjust congestion control to at least keep only one message, so the receiver side can receive it.
 
 * Emulate the restrained network
 
@@ -31,9 +12,24 @@ just network_limit
 
 * Camera image can't be loaded on the remote rviz2.
 
-* Uncomment the QoS config in the router config and restart the Zenoh Router
+* Add the following QoS section into the `ROUTER_CONFIG.json5` in the robot container.
 
-* Although it's still lagging, we can see the camera image now.
+```json5
+qos: {
+  network: [
+    {
+      payload_size: "4096..",
+      messages: ["put"],
+      overwrite: {
+          congestion_control: "block_first",
+          priority: "data_low",
+      }
+    },
+  ],
+},
+```
+
+* Now we can see the camera image is shown now.
 
 * Restore the network
 

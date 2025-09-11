@@ -14,13 +14,11 @@ downsampling: [
       "reply"
     ],
     rules: [
-      { key_expr: "*/camera/image_raw/**", freq: 1 },
+      { key_expr: "*/camera/image_raw/**", freq: 5 },
     ],
   },
 ],
 ```
-
-Remember to remove the configuration after finishing the exercise.
 
 ---
 [Next exercise ➡️](ex-7.md)

@@ -2,7 +2,7 @@
 
 Sometimes we just don't want to expose all the topics to the network for both bandwidth and security issue. The Access Control in Zenoh can help us filter the traffic.
 
-You can add the following configuration to `ROUTER_CONFIG.json5` for the robot container, which deny the image topic to pass through the Zenoh Router. After restarting the Zenoh Router, you can see that the image on the Rviz will not be updated anymore.
+You can add the following configuration to `ROUTER_CONFIG.json5` for the robot container, which deny the PointCloud data (/camera/points) to pass through the Zenoh Router. After restarting the Zenoh Router, you can see that there is no Realsense PointCloud on the Rviz anymore.
 
 ```json5
 access_control: {
@@ -20,7 +20,7 @@ access_control: {
       "flows":["egress","ingress"],
       "permission": "deny",
       "key_exprs": [
-        "*/camera/image_raw/**"
+        "*/camera/points/**"
       ],
     },
   ],
@@ -40,8 +40,6 @@ access_control: {
   ]
 },
 ```
-
-Remember to remove the configuration after finishing the exercise.
 
 ---
 [Next exercise ➡️](ex-6.md)
