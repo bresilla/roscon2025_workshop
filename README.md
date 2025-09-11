@@ -47,9 +47,11 @@ A laptop on Linux, MacOS or Windows with:
 > [!warning]
 >
 > We strongly recommend pulling this Docker image **before your arrival at ROSCon**:
+>
 > ```bash
 > docker pull zettascaletech/roscon2025_workshop
 > ```
+>
 > It is available for both `amd64` and `arm64` architectures.
 
 ## Setup
@@ -84,7 +86,6 @@ If the sessions are locked, the password is `ubuntu`.
 The 2 containers are based on the same image and are already configured with ROS 2 environment and `RMW_IMPLEMENTATION=rmw_zenoh_cpp`.  
 A [`justfile`](docker/justfile) in home directory defines some commands shorcuts that can be called with `just <command_name>`.  
 Each container has a `~/container_data` volume bound to your host's `container_volumes/robot_container` and `container_volumes/control_container` respectively.
-
 
 ## Exercises
 

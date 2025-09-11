@@ -12,7 +12,7 @@ The usage of shared memory with `rmw_zenoh` is fully transparent to your ROS app
 
 ## Measuring the latency
 
-To mesure the benefit of shared memory, we will first measure the latency of the points cloud publication with the default configuration.
+To measure the benefit of shared memory, we will first measure the latency of the points cloud publication with the default configuration.
 
 1. Run the router:  
    `just router`

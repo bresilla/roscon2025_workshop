@@ -3,7 +3,7 @@
 In this exercise we will run a Neobotix ROX robot simulation in Gazebo, along with Navigation2 and RViz2.
 
 From now on, all the commands are simplified with the help of `just` tool. It supports completion: in a terminal, type `just` and hit `tab` key twice to see the available commands.  
-All the commands are defined in `~/justfile`. 
+All the commands are defined in `~/justfile`.
 
 ## Run the simulation
 
@@ -32,7 +32,6 @@ Rviz is configured for Navigation2 and with subscriptions to the Realsense camer
 Once the costmap is shown, click on `Nav2 goal` and draw an arrow to set a navigation goal.
 
 ![Initial setup with 2 browsers](images/Navigation2.png)
-
 
 ## Get some metrics
 
