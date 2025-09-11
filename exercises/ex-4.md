@@ -27,7 +27,12 @@ It's common to visualize the robot from other host. The exercise will guide you 
 3. Run the simulation:
    `just rviz_nav2`
 
-You can stop the Zenoh Router and the rviz2 will stop working. That means the ROS messages need to pass through the Zenoh Router.
+## Experiments
+
+* What will happen if we stop the Zenoh Router?
+  * The rviz2 will stop working. That means the ROS messages need to pass through the Zenoh Router.
+* Why do we need to configure the mode to `client`? What will happen if we keep using `peer`?
+  * By default, the `peers_failover_brokering` is disabled in Zenoh router to avoid unnecessary connections, but it stops forwarding messages between containers.
 
 ---
 [Next exercise ➡️](ex-5.md)
