@@ -53,7 +53,7 @@ You can confirm shared memory is enabled by listing the files in `/dev/shm` each
 >
 > ***Is it possible to use shared memory between containers ?***
 >
-> *Yes! But first let's see how to establish communication across containers and hosts in the next exercise...*
+> *Yes! But first let's see how to establish TCP communication between containers and hosts in the next exercise...*
 
 ---
 [Next exercise ➡️](ex-4.md)

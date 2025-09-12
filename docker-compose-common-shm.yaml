@@ -1,6 +1,6 @@
 services:
-  # Robot container
-  robot:
+  # Robot container with a common shared memory volume
+  robot-shm:
     image: ${IMAGE_NAME:-zettascaletech/roscon2025_workshop}
     build:
       context: ./docker
@@ -9,45 +9,53 @@ services:
     stdin_open: true
     tty: true
     ports:
-      - "6080:80"  # VNC access to the container's desktop
-      - "7447:7447/tcp"  # Zenoh default port
-      - "7447:7447/udp"
+      - "7080:80"  # VNC access to the container's desktop
     volumes:
       - ./container_volumes/robot_container:/home/ubuntu/container_data
+      - shm-volume:/dev/shm
     working_dir: /home/ubuntu
     cap_add:
       - NET_ADMIN
-    shm_size: '512m'
     security_opt:
       - seccomp:unconfined
     networks:
-      sim_network:
-        ipv4_address: 172.1.0.2
+      sim_network_2:
+        ipv4_address: 172.2.0.2
 
-  # Controller container
-  control:
+  # Controller container with a common shared memory volume
+  control-shm:
     image: ${IMAGE_NAME:-zettascaletech/roscon2025_workshop}
     hostname: control
     stdin_open: true
     tty: true
     ports:
-      - "6081:80"  # VNC access to the container's desktop
+      - "7081:80"  # VNC access to the container's desktop
     volumes:
       - ./container_volumes/control_container:/home/ubuntu/container_data
+      - shm-volume:/dev/shm
     working_dir: /home/ubuntu
     cap_add:
       - NET_ADMIN
-    shm_size: '512m'
     security_opt:
       - seccomp:unconfined
     networks:
-      sim_network:
-        ipv4_address: 172.1.0.3
+      sim_network_2:
+        ipv4_address: 172.2.0.3
+
 
 networks:
   # Custom bridge network with a specific subnet
-  sim_network:
+  sim_network_2:
     driver: bridge
     ipam:
       config:
-        - subnet: 172.1.0.0/16
+        - subnet: 172.2.0.0/16
+
+volumes:
+  # Common shared memory volume for the containers
+  shm-volume:
+    driver: local
+    driver_opts:
+      type: tmpfs
+      device: tmpfs
+      o: size=512m,uid=1000,gid=1000,mode=777

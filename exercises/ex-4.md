@@ -18,13 +18,11 @@ Start the robot simulation and the Navigation2 stack.
 With the current configuration, all the Nodes are communicating in peer-to-peer and with the router via TCP over the loopback or via shared memory for the big messages.  
 The only way to communicate with the Nodes is to connect to the router which is listening for incoming TCP connections on all the available network interfaces and port **7447** (`tcp/[::]:7447`).
 
-
 ## In control container
 
 ### Solution 1: Run another router
 
 The simplest solution to connect Nodes running in a remote host (here the controler container) to the robot's Nodes is to run another router which connects to the robot's router.
-
 
 1. Copy the Zenoh Config to `~/container_data/`, just as we did in the robot container before. After the copy, remember to `source ~/workshop_env.bash` again to set the environement variables with those new files.
 
@@ -89,6 +87,32 @@ However, if your remote host only runs one node, you might want to avoid an extr
 > *In `client` node, the node always has only one connection to the router. The router knows it can't connect directly to another node and will always route the communication for this `client` node.*
 >
 > *The behavior of the router can be changed to also route the communication between peers that cannot directly connect to each other. For this, configure `routing/router/peers_failover_brokering=true`. Be aware that this setting introduces additional management overhead and extra messages during system startup, increasing with the number of nodes.*
+
+<details>
+<summary><h2>Bonus - shared memory between containers </h2></summary>
+
+Share memory between Docker containers can be setup defining a common `tmpfs` type volume for all, mounted as `/dev/shm`. See how it's done the [docker-compose-common-shm.yaml](../docker-compose-common-shm.yaml) file.
+
+You can experiment with this alternative setup of containers as such:
+
+1. Verify that your `roscon2025_workshop/container_volumes/robot_container/SESSION_CONFIG.json5` still has shared memory enabled, following the exercise 3.
+2. On you host, run the containers:  
+   `docker compose up`
+3. On the robot container on `http://localhost:7080/`:
+   - Run the router:  
+     `just router`
+   - Run the simulation using wall time:  
+     `just rox_simu use_wall_time:=True`
+4. On the controller container on `http://localhost:7081/`:
+   - Run the camera latency measure, configured as a client connecting to the robot's router and with shared memory enabled:  
+     `ZENOH_CONFIG_OVERRIDE='mode="client";connect/endpoints=["tcp/172.2.0.2:7447"];transport/shared_memory/enabled=true' just cam_latency`
+
+See the latency you get. To compare without shared memory, run:  
+`ZENOH_CONFIG_OVERRIDE='mode="client";connect/endpoints=["tcp/172.2.0.2:7447"];transport/shared_memory/enabled=false' just cam_latency`
+
+When you are finished, just hit `CTRL+C` where you run `docker compose up` command.
+
+</details>
 
 ---
 [Next exercise ➡️](ex-5.md)
