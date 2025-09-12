@@ -43,6 +43,10 @@ top:
 iftop_lo:
    sudo iftop -B -P -i lo -f "not port 5901 and (host 127.0.0.1 or host ::1)"
 
+# iftop for traffic to a remote Zenoh router only (eth0 + port 7447)
+iftop_router:
+   sudo iftop -P -i eth0 -f "port 7447"
+
 # Find which PID/command is using a port number
 find_port PORT:
    netstat -tulnp 2>/dev/null | grep ':{{PORT}}' | sed 's/.*LISTEN *//'
