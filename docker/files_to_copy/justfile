@@ -53,13 +53,8 @@ find_port PORT:
 
 # Restrain the network quality
 network_limit:
-   # qdisc: Queuing discipline
-   # tbf: Token Bucket Filter
-   # maximum average transmission rate: 20 Mbps
-   # available maximum burst: 200 kbit
-   # maximum time before drop: 50 ms
-   sudo tc qdisc add dev eth0 root handle 1: tbf rate 20mbit burst 200kbit latency 50ms
+   /home/ubuntu/network_limit.sh
 
-# Restore the network quality 
+# Restore the network quality
 network_normal:
-   sudo tc qdisc del dev eth0 root
+   /home/ubuntu/network_limit.sh cancel
