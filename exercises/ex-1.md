@@ -24,14 +24,15 @@ To test this, open three different terminals within the **robot** container and 
 
 ### What's the default configuration ?
 
-By default `rmw_zenoh` used two configuration files from its installation directory:
+By default `rmw_zenoh` uses 2 configuration files:
 
-- `~/rmw_zenoh/install/rmw_zenoh_cpp/share/rmw_zenoh_cpp/config/DEFAULT_RMW_ZENOH_ROUTER_CONFIG.json5` for the router.
-- `~/rmw_zenoh/install/rmw_zenoh_cpp/share/rmw_zenoh_cpp/config/DEFAULT_RMW_ZENOH_SESSION_CONFIG.json5` for the all the ROS nodes.
+- `DEFAULT_RMW_ZENOH_ROUTER_CONFIG.json5` for the router
+- `DEFAULT_RMW_ZENOH_SESSION_CONFIG.json5` for all the ROS processes (single nodes and component containers)
 
-> [!NOTE]
-> If you install `rmw_zenoh` from the ROS repositories, the default config files are in
-> `/opt/ros/${ROS_DISTRO}/share/rmw_zenoh_cpp/config/`
+You can find those files in the `rmw_zenoh_cpp` installation directory:
+
+- if installed from ROS repositories: `/opt/ros/${ROS_DISTRO}/share/rmw_zenoh_cpp/config/`
+- if built and installed from sources, as is the case for this workshop containers: ` ~/rmw_zenoh/install/rmw_zenoh_cpp/share/rmw_zenoh_cpp/config/`
 
 Have a look to both configuration files, especially to those values:
 
@@ -71,12 +72,10 @@ You can specify multiple key-value pairs using the following syntax:
 
 For instance, to configure the multicast scouting and allow the `talker` and `listener` to discover each other without a router:
 
-```bash
-# Run the talker
-ZENOH_CONFIG_OVERRIDE='scouting/multicast/enabled=true' ros2 run demo_nodes_cpp talker
-# Run the listener
-ZENOH_CONFIG_OVERRIDE='scouting/multicast/enabled=true' ros2 run demo_nodes_cpp listener
-```
+- Run the talker:  
+`ZENOH_CONFIG_OVERRIDE='scouting/multicast/enabled=true' ros2 run demo_nodes_cpp talker`
+- Run the listener:  
+`ZENOH_CONFIG_OVERRIDE='scouting/multicast/enabled=true' ros2 run demo_nodes_cpp listener`
 
 ## Bonus - Service, Action and Introspection
 
