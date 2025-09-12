@@ -2,6 +2,25 @@
 
 It's common to visualize the robot from other host. The exercise will guide you how to visualize your robot remotely.
 
+```mermaid
+---
+config:
+  theme: redux
+  look: handDrawn
+  layout: dagre
+---
+graph TD
+subgraph robot container
+    sim1["Gazebo"] <--> zr1["Zenoh Router"]
+    nav1["Navigation2"] <--> zr1
+    sim1 <--> nav1
+end
+subgraph control container
+    rv2["RViz2"]
+end
+rv2 <-- client mode --> zr1
+```
+
 ## robot container
 
 1. Run the router:

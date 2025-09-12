@@ -23,12 +23,12 @@ config:
 ---
 graph TD
 subgraph Host
-    subgraph Container A
+    subgraph robot container
         sim1["Gazebo (ns: robot1)"] <--> zr1["Zenoh Router"]
         nav1["Navigation2 (ns: robot1)"] <--> zr1
         sim1 <--> nav1
     end
-    subgraph Container B
+    subgraph control container
         rv2["RViz2 (ns: robot1)"]
     end
 end
