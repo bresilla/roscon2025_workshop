@@ -1,6 +1,6 @@
 # Exercise 4 - Remote connectivity
 
-It's common to visualize the robot from other host. The exercise will guide you how to visualize your robot remotely, from the controller container.
+It's common to visualize the robot from other host. The exercise will guide you how to visualize your robot remotely, from the control container.
 
 ![Remote Rviz](images/remote_rviz.png)
 
@@ -104,7 +104,7 @@ You can experiment with this alternative setup of containers as such:
      `just router`
    - Run the simulation using wall time:  
      `just rox_simu use_wall_time:=True`
-4. On the controller container on http://localhost:7081/:
+4. On the control container on http://localhost:7081/:
    - Run the camera latency measure, configured as a client connecting to the robot's router and with shared memory enabled:  
      `ZENOH_CONFIG_OVERRIDE='mode="client";connect/endpoints=["tcp/172.2.0.2:7447"];transport/shared_memory/enabled=true' just cam_latency`
 

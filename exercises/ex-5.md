@@ -1,11 +1,23 @@
 # Exercise 5 - Access Control
 
-For bandwidth and security purposes, we usually don’t want to expose every topic on the network. Zenoh’s Access Control feature lets us keep specific topics and services confined to the robot.
+For bandwidth and security purposes, we usually don’t want to expose every topic on the network. Zenoh’s Access Control feature allows to keep specific topics and services confined to the robot.
 
-Let's restrict the deny traffic on `camera/points` topic for points cloud data for instance.  
-Starting from the previous exercise setup (NOT with shared memory between containers), keep running the router, the simulation and Navigation2 in the robot container and Rviz in the contraoller container.
+Let’s experiment by limiting the traffic on the point cloud topic: `/camera/points`.
 
-1. In the robot container, modify the `~/container_data/ROUTER_CONFIG.json5` file to add this section:  
+But at first measure the Zenoh traffic between RViz and the robot, running the same setup than the previous exercise (NOT with shared memory between containers!):
+
+- In the robot container, run:
+
+  - `just router`
+  - `just rox_simu`
+  - `just rox_nav2`
+
+- In the control container, run:
+
+  - `just rviz_nav2`
+  - `just iftop_router`
+
+Now, in the robot container, you can modify the `~/container_data/ROUTER_CONFIG.json5` file to add this section:  
 
    ```json5
    access_control: {
@@ -51,10 +63,9 @@ Starting from the previous exercise setup (NOT with shared memory between contai
    },
    ```
 
-2. Restart the router on the robot:  
-`just router`
+And restart the router in the robot container.
 
-3. See in RViz that the points cloud are no longer received.
+See the impact on the traffic and check that the points cloud are no longer received by RViz.
 
 > [!IMPORTANT]
 >
