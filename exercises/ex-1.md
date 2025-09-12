@@ -7,7 +7,7 @@ When a node starts, it automatically tries to connect to the local Zenoh router.
 
 To test this, open three different terminals within the **robot** container and run the `demo_nodes_cpp` package's `talker` and `listener`:
 
-1. Start the Zenoh router:  
+1. Run the Zenoh router:  
   `ros2 run rmw_zenoh_cpp rmw_zenohd`
 2. Run the talker:  
   `ros2 run demo_nodes_cpp talker`
@@ -15,12 +15,11 @@ To test this, open three different terminals within the **robot** container and 
   `ros2 run demo_nodes_cpp listener`
 4. Press `CTRL+C` to stop the Zenoh router. The talker and listener will continue exchanging messages without the router.
 
-> [!NOTE]
-> The router may be started after the Nodes! Each Node periodically tries to connect to the router.
-> As soon as the router discovers the Nodes, it propagates their endpoints to each other via a gossip protocol
-> and each peer establish a direct connection with each other peer.
-
 <p align="center"><img src="images/talker-listener.png"  height="250" alt="talker-listener"/></p>
+
+> [!NOTE]
+> *The router may be started after the Nodes! Each Node periodically tries to connect to the router.
+> As soon as the router discovers the Nodes, it propagates their endpoints to each other via a gossip protocol and each peer establish a direct connection with each other peer.*
 
 ### What's the default configuration ?
 
@@ -49,9 +48,9 @@ Let's copy them in preparation of the next exercises:
 
 ```bash
 cp ~/rmw_zenoh/install/rmw_zenoh_cpp/share/rmw_zenoh_cpp/config/DEFAULT_RMW_ZENOH_ROUTER_CONFIG.json5 \
-   /home/ubuntu/container_data/ROUTER_CONFIG.json5
+   ~/container_data/ROUTER_CONFIG.json5
 cp ~/rmw_zenoh/install/rmw_zenoh_cpp/share/rmw_zenoh_cpp/config/DEFAULT_RMW_ZENOH_SESSION_CONFIG.json5 \
-   /home/ubuntu/container_data/SESSION_CONFIG.json5
+   ~/container_data/SESSION_CONFIG.json5
 ```
 
 Now you can also see and edit those files also on your host in `roscon2025_workshop/container_volumes/robot_container/`.
@@ -61,7 +60,8 @@ The configuration files used by `rmw_zenoh` are set via environement variables:
 - `ZENOH_ROUTER_CONFIG_URI` for the router.
 - `ZENOH_SESSION_CONFIG_URI` for the ROS nodes.
 
-In both containers, your bash environment automatically sets those environment variables if the `/home/ubuntu/container_data/ROUTER_CONFIG.json5` and `/home/ubuntu/container_data/SESSION_CONFIG.json5` exist. Now that you created those files, source your `~/.bashrc` to refresh your open terminals.
+In both containers, the `~/workshop_env.bash` script automatically sets those environment variables if the `~/container_data/ROUTER_CONFIG.json5` and `~/container_data/SESSION_CONFIG.json5` files exist. Now that you created those files, source it to refresh your open terminals:  
+`source ~/workshop_env.bash`
 
 ### Overriding the configuration files
 

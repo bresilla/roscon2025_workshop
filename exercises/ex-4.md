@@ -1,57 +1,94 @@
-# Exercise 4 - Run rviz2 to visualize the remote robot
+# Exercise 4 - Remote connectivity
 
-It's common to visualize the robot from other host. The exercise will guide you how to visualize your robot remotely.
+It's common to visualize the robot from other host. The exercise will guide you how to visualize your robot remotely, from the controller container.
 
-```mermaid
----
-config:
-  theme: redux
-  look: handDrawn
-  layout: dagre
----
-graph TD
-subgraph robot container
-    sim1["Gazebo"] <--> zr1["Zenoh Router"]
-    nav1["Navigation2"] <--> zr1
-    sim1 <--> nav1
-end
-subgraph control container
-    rv2["RViz2"]
-end
-rv2 <-- client mode --> zr1
-```
+![Remote Rviz](exercises/images/remote_rviz.png)
 
-## robot container
+## In robot container
 
-1. Run the router:
+Start the robot simulation and the Navigation2 stack.
+
+1. Run the Zenoh router:  
    `just router`
-2. Run the simulation:
+2. Run the simulation:  
    `just rox_simu`
-3. Run the navigation2:
-   `just rox_nav2`  
+3. Run Navigation2:  
+   `just rox_nav2`
 
-## control container
+With the current configuration, all the Nodes are communicating in peer-to-peer and with the router via TCP over the loopback or via shared memory for the big messages.  
+The only way to communicate with the Nodes is to connect to the router which is listening for incoming TCP connections on all the available network interfaces and port **7447** (`tcp/[::]:7447`).
 
-1. Copy the Zenoh Config to container_data, just as we did in the robot container before. Remember `source ~/.bashrc` in the open terminal.
+
+## In control container
+
+### Solution 1: Run another router
+
+The simplest solution to connect Nodes running in a remote host (here the controler container) to the robot's Nodes is to run another router which connects to the robot's router.
+
+
+1. Copy the Zenoh Config to `~/container_data/`, just as we did in the robot container before. After the copy, remember to `source ~/workshop_env.bash` again to set the environement variables with those new files.
 
    ```bash
    cp ~/rmw_zenoh/install/rmw_zenoh_cpp/share/rmw_zenoh_cpp/config/DEFAULT_RMW_ZENOH_ROUTER_CONFIG.json5 \
-      /home/ubuntu/container_data/ROUTER_CONFIG.json5
+      ~/container_data/ROUTER_CONFIG.json5
    cp ~/rmw_zenoh/install/rmw_zenoh_cpp/share/rmw_zenoh_cpp/config/DEFAULT_RMW_ZENOH_SESSION_CONFIG.json5 \
-      /home/ubuntu/container_data/SESSION_CONFIG.json5
+      ~/container_data/SESSION_CONFIG.json5
+   source ~/workshop_env.bash
    ```
 
-2. Update the `SESSION_CONFIG.json5` in container_data. Update the mode to `client` and add `"tcp/172.1.0.2:7447"` to `connect/endpoint` section.
+2. Modify `~/container_data/ROUTER_CONFIG.json5` to add `tcp/172.1.0.2:7447` as connect endpoint:
 
-3. Run the simulation:
+   ```json5
+     // ...
+     connect: {
+       // ...
+       endpoints: [
+         "tcp/172.1.0.2:7447"
+       ],
+       // ...
+     },
+     // ...
+   ```
+
+3. Run the router:  
+   `just router`
+4. Run Rviz:  
    `just rviz_nav2`
 
-## Experiments
+The benefit of this solution is that you can have a full ROS system with several nodes communicating
+peer-to-peer inside your remote host. The two routers are routing the required traffic between your two sub-systems, possibly batching some messages that could come from different Nodes.
 
-* What will happen if we stop the Zenoh Router?
-  * The rviz2 will stop working. That means the ROS messages need to pass through the Zenoh Router.
-* Why do we need to configure the mode to `client`? What will happen if we keep using `peer`?
-  * By default, the `peers_failover_brokering` is disabled in Zenoh router to avoid unnecessary connections, but it stops forwarding messages between containers.
+However, if your remote host only runs one node, you might want to avoid an extra hop via a local router and prefer to have your node directly connecting to the robot's router.
+
+### Soluton 2: RViz connecting directly to the robot's router
+
+1. Modify `~/container_data/SESSION_CONFIG.json5` in container_data to set the mode to `client` and set `"tcp/172.1.0.2:7447"` as connect endpoint:
+
+   ```json5
+     mode: "client",
+     // ...
+     connect: {
+       // ...
+       endpoints: [
+         "tcp/172.1.0.2:7447"
+       ],
+       // ...
+     },
+     // ...
+   ```
+
+2. Stop the router, stop Rviz and run it again:  
+   `just rviz_nav2`
+
+> [!Note]
+>
+> ***Why do we need to configure the mode to `client` ?***
+>
+> *By default the router is configured to assume that peers can connect directly to each other, for direct peer-to-peer communication. However the ROS nodes are configured to communicate only via the loopback. Thus a node in the controler host/container cannot connect to a node in the robot.*
+>
+> *In `client` node, the node always has only one connection to the router. The router knows it can't connect directly to another node and will always route the communication for this `client` node.*
+>
+> *The behavior of the router can be changed to also route the communication between peers that cannot directly connect to each other. For this, configure `routing/router/peers_failover_brokering=true`. Be aware that this setting introduces additional management overhead and extra messages during system startup, increasing with the number of nodes.*
 
 ---
 [Next exercise ➡️](ex-5.md)

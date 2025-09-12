@@ -95,7 +95,7 @@ Each container has a `~/container_data` volume bound to your host's `container_v
 
 ### [Exercise 3 - Shared Memory](exercises/ex-3.md)
 
-### [Exercise 4 - Run rviz2 to visualize the remote robot](exercises/ex-4.md)
+### [Exercise 4 - Remote connectivity](exercises/ex-4.md)
 
 ### [Exercise 5 - Access Control](exercises/ex-5.md)
 
