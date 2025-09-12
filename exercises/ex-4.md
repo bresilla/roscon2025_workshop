@@ -2,7 +2,7 @@
 
 It's common to visualize the robot from other host. The exercise will guide you how to visualize your robot remotely, from the controller container.
 
-![Remote Rviz](exercises/images/remote_rviz.png)
+![Remote Rviz](images/remote_rviz.png)
 
 ## In robot container
 
