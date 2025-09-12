@@ -18,6 +18,9 @@ rox_nav2 *ARGS:
 rviz_nav2 *ARGS:
    ros2 launch nav2_bringup rviz_launch.py rviz_config:=/home/ubuntu/rox_nav2.rviz {{ARGS}}
 
+# Run teleop_twist_keyboard
+teleop:
+   ros2 run teleop_twist_keyboard teleop_twist_keyboard
 
 ###
 ### Network monitoring commands
