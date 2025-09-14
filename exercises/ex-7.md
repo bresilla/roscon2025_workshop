@@ -1,56 +1,45 @@
 # Exercise 7 - Traverse the Internet
 
-If both your robot and rviz are behind the NAT, it's difficult to connect them together. This is not an issue for Zenoh. We can easily add a Zenoh router to traverse the Internet.
+Remote control and monitoring of a robot over the Internet could be challenging because of networks configurations, NATs and firewalls. Fortunately, Zenoh provides a simple solution requiring only a connection to Internet from your hosts:
 
-However, here comes another issue: If we connect several robots to the same router, we will face a topic conflict among robots. In this case, we can assign Zenoh namespace for each robot to isolate the traffic.
+![Interconnection via a router in the Cloud](./images/cloud_connection.png)
 
-> [!warning]
+Use a Zenoh deployed on Internet (e.g. in a Cloud instance) as an intermediary. Both your robot and your controler connects to this router, via TCP, TLS or even QUIC.
+
+For a simple test in this workshop, all the attendees will connect to the same router, deployed on `roscon.zenoh.io`. However, since all the robots are using the same topics and services names, they will conflict with each other. We will now see the different solutions to overcome this issue.
+
+## Use different ROS namespaces for each robot
+
+This solution is cumbersome because it requires updating the launch files and remapping the `/tf` and `/tf_static` topics. However, for fleet management use cases - such as with Open-RMF - it’s the most suitable approach.
+
+## Use different `ROS_DOMAIN_ID` for each robot
+
+As the domain id is part of the key expressions used by `rmw_zenoh` the conflicts are avoided.
+You can easily configure it in your environment with:  
+`export ROS_DOMAIN_ID=123456`
+
+> [!Note]
 >
-> Note that the Zenoh namespace is different from the one in ROS 2.
-> That means they can't be used mixedly.
-> They are in different chunk of the Zenoh key expression.
->
-> * ROS 2 namespace: `<domain_id>/<ros_namespace>/<topic>/<type>/<hash>`
-> * Zenoh namespace: `<zenoh_namespace>/<domain_id>/<topic>/<type>/<hash>`
->
+> *`rmw_zenoh` has not the same [constraints](https://docs.ros.org/en/jazzy/Concepts/Intermediate/About-Domain-ID.html#id4) than DDS for the domain id. Any number up to `MAX_UINT` can be used.
 
-```mermaid
----
-config:
-  theme: redux
-  look: handDrawn
-  layout: dagre
----
-graph TD
-subgraph Host
-    subgraph robot container
-        sim1["Gazebo (ns: robot1)"] <--> zr1["Zenoh Router"]
-        nav1["Navigation2 (ns: robot1)"] <--> zr1
-        sim1 <--> nav1
-    end
-    subgraph control container
-        rv2["RViz2 (ns: robot1)"]
-    end
-end
-subgraph Cloud
-    zr3["Zenoh Router"]
-end
-zr1 <-- robot1/zenoh_keyexpr --> zr3
-rv2 <-- robot1/zenoh_keyexpr --> zr3
-```
+## Configure a Zenoh namespace for each robot
 
-## Add namespace for your robots
+A Zenoh names space is transparently added as a prefix to the key expressions for all the messages sent by a Zenoh session. It's automatically stripped from all incoming messages, to preserve the transparency.  
+To configure the namespace, edit the `~/container_data/SESSION_CONFIG.json5` files on both containers to add `namespace: "@<your_namespace_name>`  
 
-1. Stop all the simulation, robot, rviz first.
-2. Choose an unique namespace for your robot.
-3. Add `namespace: "your_robot_name"` to the namespace section in the `SESSION_CONFIG.json5` for both robot and control containers.
+Note that a Zenoh namespace is different than a ROS namespace. It won't appear in any ROS graph.
 
-Note that Zenoh Router is only used for discovery and messages forwarding, so we need to add the `namespace` in the session configuration.
+## Connect to the Zenoh router in the Cloud
 
-## Connect to an external Zenoh router
+1. In robot container's `~/container_data/ROUTER_CONFIG.json5` file, modify the `connect/endpoints` list to only include `"tcp/roscon.zenoh.io:7447"`
 
-1. Get the IP of the external Zenoh router. (Assume the IP is `10.0.0.1`)
-2. Add the connect endpoints to the `ROUTER_CONFIG.json5` on the **robot** container. (e.g. `"tcp/10.0.0.1:7447"` in `connect/endpoints`)
-3. Update the connect endpoints in the `SESSION_CONFIG.json5` on the **control** container. (e.g. `"tcp/10.0.0.1:7447"` in `connect/endpoints`)
-   * Note that the previous connect endpoint (the one connecting to the robot container) should be removed, since we want it to connect through the external router.
-4. Run the simulation, robot and rviz. You can find them connecting together.
+2. In the control container's `~/container_data/SESSION_CONFIG.json5` file, modify the `connect/endpoints` list to only include `"tcp/roscon.zenoh.io:7447"`
+
+3. In the robot container, run:
+
+   * `just router`
+   * `just rox_simu`
+   * `just rox_nav2`
+
+4. In the control container, run:  
+   `just rviz_nav2`
