@@ -1,29 +1,33 @@
 # Exercise 6 - Cope with congestion and head of line blocking
 
-With a poor network connection (e.g. 2.4GHz WiFi with radio disturbance), the TCP connection with the robot get congested. For all topics except those with TRANSIENT_LOCAL + KEEP_ALL QoS, `rmw_zenoh` is configured with congestion control `drop`. Meaning that in case of congestion, Zenoh will drop the messages it can't push to the network socket.
+Head-of-line blocking occurs when large messages (such as images or point clouds) delay the transmission of smaller, time-sensitive data (like control commands or status updates) in the same communication channel. This can introduce unacceptable latency for critical operations, especially over constrained networks.
 
-Let's experiment by simulating a WiFi connection connection between the two containers:
+For all topics except those with TRANSIENT_LOCAL + KEEP_ALL QoS, `rmw_zenoh` is configured with congestion control `drop`. Meaning that in case of congestion, Zenoh will drop the messages it can't push to the network after a timeout (see `transport/link/tx/queue/congestion_control/drop` config). On a congested network, the push of large messages will probably always exceed the timeout and hence always be dropped.  
 
-1. Stop Rviz in the control container
+What you likely want in such case is to at least have one large message from time to time, but not impacting the latency of small messages. The solution for this if to make the router to change on-the-fly the QoS of large messages to:
 
-2. In robot container, limit the network traffic with the control container running:  
-   `just network_limit`
+* Change the Zenoh `congestion_control` QoS from `drop` to `block_first`. With this QoS Zenoh will block on the first message to be pushed to the network and drop the other ones until this first message it sent. Thus at lease some large messages manage to be transmitted.
+* Lower the priority of large messages, to keep higher priority for smaller messages.
 
+Let's experiment this configuration on a simulated WiFi connection connection between the two containers:
 
+1. In robot container, limit the network traffic with the control container running:  
+   `just network_limit`  
+   You can check it's effective with a ping to the control container:  
+   `ping 172.1.0.3`
 
-Some topic is large but less significant. The drop of those data is allowed, but we still want to receive them with low priority.
-However, when the network quality is bad, the data can't even send out because some of the fragments is dropped.
-We can adjust congestion control to at least keep only one message, so the receiver side can receive it.
+2. In the robot container, run:
 
-* Emulate the restrained network
+   * `just router`
+   * `just rox_simu`
+   * `just rox_nav2`
 
-   ```bash
-   just network_limit
-   ```
+3. In the control container, run:  
+   `just rviz_nav2`
 
-* Camera image can't be loaded on the remote rviz2.
+You can see that RViz doesn't receive any camera image.
 
-* Add the following QoS section into the `ROUTER_CONFIG.json5` in the robot container.
+Now, In robot container's `~/container_data/ROUTER_CONFIG.json5` file, add the following QoS section:
 
    ```json5
    qos: {
@@ -40,13 +44,9 @@ We can adjust congestion control to at least keep only one message, so the recei
    },
    ```
 
-* Now we can see the camera image is shown now.
+And restart the robot's router. You should see the images received in RViz now.
 
-* Restore the network
-
-   ```bash
-   just network_normal
-   ```
+To restore the network back, run `just network_normal`
 
 ---
 [Next exercise ➡️](ex-7.md)
