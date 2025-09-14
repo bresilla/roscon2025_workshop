@@ -1,45 +1,52 @@
-# Exercise 7 - Traverse the Internet
+# Exercise 7 - Cope with congestion and head of line blocking
 
-Remote control and monitoring of a robot over the Internet could be challenging because of networks configurations, NATs and firewalls. Fortunately, Zenoh provides a simple solution requiring only a connection to Internet from your hosts:
+Head-of-line blocking occurs when large messages (such as images or point clouds) delay the transmission of smaller, time-sensitive data (like control commands or status updates) in the same communication channel. This can introduce unacceptable latency for critical operations, especially over constrained networks.
 
-![Interconnection via a router in the Cloud](./images/cloud_connection.png)
+For all topics except those with TRANSIENT_LOCAL + KEEP_ALL QoS, `rmw_zenoh` is configured with congestion control `drop`. Meaning that in case of congestion, Zenoh will drop the messages it can't push to the network after a timeout (see `transport/link/tx/queue/congestion_control/drop` config). On a congested network, the push of large messages will probably always exceed the timeout and hence always be dropped.  
 
-Use a Zenoh deployed on Internet (e.g. in a Cloud instance) as an intermediary. Both your robot and your controler connects to this router, via TCP, TLS or even QUIC.
+What you likely want in such case is to at least have one large message from time to time, but not impacting the latency of small messages. The solution for this if to make the router to change on-the-fly the QoS of large messages to:
 
-For a simple test in this workshop, all the attendees will connect to the same router, deployed on `roscon.zenoh.io`. However, since all the robots are using the same topics and services names, they will conflict with each other. We will now see the different solutions to overcome this issue.
+* Change the Zenoh `congestion_control` QoS from `drop` to `block_first`. With this QoS Zenoh will block on the first message to be pushed to the network and drop the other ones until this first message it sent. Thus at lease some large messages manage to be transmitted.
+* Lower the priority of large messages, to keep higher priority for smaller messages.
 
-## Use different ROS namespaces for each robot
+Let's experiment this configuration on a simulated WiFi connection connection between the two containers:
 
-This solution is cumbersome because it requires updating the launch files and remapping the `/tf` and `/tf_static` topics. However, for fleet management use cases - such as with Open-RMF - it’s the most suitable approach.
+1. In robot container, limit the network traffic with the control container running:  
+   `just network_limit`  
+   You can check it's effective with a ping to the control container:  
+   `ping 172.1.0.3`
 
-## Use different `ROS_DOMAIN_ID` for each robot
-
-As the domain id is part of the key expressions used by `rmw_zenoh` the conflicts are avoided.
-You can easily configure it in your environment with:  
-`export ROS_DOMAIN_ID=123456`
-
-> [!Note]
->
-> *`rmw_zenoh` has not the same [constraints](https://docs.ros.org/en/jazzy/Concepts/Intermediate/About-Domain-ID.html#id4) than DDS for the domain id. Any number up to `MAX_UINT` can be used.
-
-## Configure a Zenoh namespace for each robot
-
-A Zenoh names space is transparently added as a prefix to the key expressions for all the messages sent by a Zenoh session. It's automatically stripped from all incoming messages, to preserve the transparency.  
-To configure the namespace, edit the `~/container_data/SESSION_CONFIG.json5` files on both containers to add `namespace: "@<your_namespace_name>`  
-
-Note that a Zenoh namespace is different than a ROS namespace. It won't appear in any ROS graph.
-
-## Connect to the Zenoh router in the Cloud
-
-1. In robot container's `~/container_data/ROUTER_CONFIG.json5` file, modify the `connect/endpoints` list to only include `"tcp/roscon.zenoh.io:7447"`
-
-2. In the control container's `~/container_data/SESSION_CONFIG.json5` file, modify the `connect/endpoints` list to only include `"tcp/roscon.zenoh.io:7447"`
-
-3. In the robot container, run:
+2. In the robot container, run:
 
    * `just router`
    * `just rox_simu`
    * `just rox_nav2`
 
-4. In the control container, run:  
+3. In the control container, run:  
    `just rviz_nav2`
+
+You can see that RViz doesn't receive any camera image.
+
+Now, In robot container's `~/container_data/ROUTER_CONFIG.json5` file, add the following QoS section:
+
+   ```json5
+   qos: {
+     network: [
+       {
+         payload_size: "4096..",
+         messages: ["put"],
+         overwrite: {
+             congestion_control: "block_first",
+             priority: "data_low",
+         }
+       },
+     ],
+   },
+   ```
+
+And restart the robot's router. You should see the images received in RViz now.
+
+To restore the network back, run `just network_normal`
+
+---
+[Next exercise ➡️](ex-8.md)
