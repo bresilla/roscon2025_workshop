@@ -44,6 +44,7 @@ Note that a Zenoh namespace is different than a ROS namespace. It won't appear i
 4. In the control container, run:  
    `just rviz_nav2`
 
+---
 
 > [!Tip]
 >
