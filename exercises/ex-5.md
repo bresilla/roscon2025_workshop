@@ -23,7 +23,7 @@ Zenoh supports transparent compression of payloads, using [LZ4](https://en.wikip
 To be effective, compression has to be enabled on the both end of a Zenoh link. In our case we want to enable the compression between the robot's router and RViz running in the controler host. As the robot's nodes won't have compression enabled, the peer-to-peer communication between nodes and with the router won't be compressed.
 
 1. In robot container's `~/container_data/ROUTER_CONFIG.json5` file, search for the `transport/unicast/compression/enabled` setting and set it to `true`.
-2. In the control container's `~/container_data/ROUTER_SESSION.json5` file, search for the `transport/unicast/compression/enabled` setting and set it to `true`.
+2. In the control container's `~/container_data/SESSION_CONFIG.json5` file, search for the `transport/unicast/compression/enabled` setting and set it to `true`.
 3. Restart the robot's router
 4. Restart Rviz
 
