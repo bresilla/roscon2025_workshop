@@ -10,8 +10,8 @@ However, here comes another issue: If we connect several robots to the same rout
 > That means they can't be used mixedly.
 > They are in different chunk of the Zenoh key expression.
 >
-> ROS 2 namespace: `<domain_id>/<ros_namespace>/<topic>/<type>/<hash>`
-> Zenoh namespace: `<zenoh_namespace>/<domain_id>/<topic>/<type>/<hash>`
+> * ROS 2 namespace: `<domain_id>/<ros_namespace>/<topic>/<type>/<hash>`
+> * Zenoh namespace: `<zenoh_namespace>/<domain_id>/<topic>/<type>/<hash>`
 >
 
 ```mermaid
