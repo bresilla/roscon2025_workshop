@@ -13,6 +13,8 @@ Since both the robot and the control are using certificates signed by the same C
 > [!Warning]
 >
 > Such solution with self-signed certificates and without domain verification provides encryption and basic authentication, but it does not protect against sophisticated attacks like certificate spoofing or man-in-the-middle (MITM) attacks. Without a trusted Certificate Authority (CA) or proper domain validation, the system remains vulnerable to impersonation if an attacker gains access to your private key or certificate files. This approach is suitable for isolated or trusted LAN environments, but it is not recommended for exposed or public networks where stronger identity verification is required.
+>
+> For a simple and secured deployment over the Internet, you can rely on the [Zetta Platform](https://www.zettascale.cloud/).
 
 ## Certificates and key generation
 

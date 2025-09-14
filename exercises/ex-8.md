@@ -6,7 +6,7 @@ Remote control and monitoring of a robot over the Internet could be challenging 
 
 Use a Zenoh deployed on Internet (e.g. in a Cloud instance) as an intermediary. Both your robot and your controler connects to this router, via TCP, TLS or even QUIC.
 
-For a simple test in this workshop, all the attendees will connect to the same router, deployed on `roscon.zenoh.io`. However, since all the robots are using the same topics and services names, they will conflict with each other. We will now see the different solutions to overcome this issue.
+For a simple test in this workshop, all the attendees will connect via TCP to the same router deployed on `roscon.zenoh.io`. However, since all the robots are using the same topics and services names, they will conflict with each other. We will now see the different solutions to overcome this issue.
 
 ## Use different ROS namespaces for each robot
 
@@ -43,3 +43,9 @@ Note that a Zenoh namespace is different than a ROS namespace. It won't appear i
 
 4. In the control container, run:  
    `just rviz_nav2`
+
+
+> [!Tip]
+>
+> For a similar setup but secured via mTLS or QUIC you can rely on the [Zetta Platform](https://www.zettascale.cloud/). This Platform-as-a-Service offering allows you to provision Zenoh router instances in different Cloud regions and to automatically generate the certificates and keys for authentication and encrypted connections.  
+> For more information and demonstrations watch [those videos](https://www.youtube.com/playlist?list=PLZDEtJusUvAaaBz6vwGyRDJnkYkMw8DfJ).
