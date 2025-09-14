@@ -97,13 +97,11 @@ Each container has a `~/container_data` volume bound to your host's `container_v
 
 ### [Exercise 4 - Remote connectivity](exercises/ex-4.md)
 
-### [Exercise 5 - Access Control](exercises/ex-5.md)
+### [Exercise 5 - Tuning for wireless networks](exercises/ex-5.md)
 
-### [Exercise 6 - Downsampling](exercises/ex-6.md)
+### [Exercise 6 - Cope with congestion and head of line blocking](exercises/ex-6.md)
 
-### [Exercise 7 - Adjust the QoS & Priority of topics](exercises/ex-7.md)
-
-### [Exercise 8 - Traverse the Internet](exercises/ex-8.md)
+### [Exercise 7 - Traverse the Internet](exercises/ex-7.md)
 
 ---
 
