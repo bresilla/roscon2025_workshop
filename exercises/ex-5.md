@@ -21,7 +21,7 @@ Since both the robot and the control are using certificates signed by the same C
 Run those commands on your host:
 
 ```bash
-mkdir tls
+mkdir -p tls
 
 # Create root CA
 docker run -it --init -v $PWD/tls:/home/step smallstep/step-cli \
@@ -41,7 +41,7 @@ docker run -it --init -v $PWD/tls:/home/step smallstep/step-cli \
 # Copy root CA certificate and robot's key and certificate to the robot container
 cp ./tls/root_ca.crt ./tls/robot.* ./container_volumes/robot_container/
 # Copy root CA certificate and RViz's key and certificate to the control container
-cp ./tls/root_ca.crt ./tls/control.* ./container_volumes/robot_container/
+cp ./tls/root_ca.crt ./tls/control.* ./container_volumes/control_container/
 ```
 
 ## Robot configuration
@@ -51,34 +51,40 @@ In robot container's `~/container_data/ROUTER_CONFIG.json5` file:
 1. Change the `listen/endpoints` list as such:
 
     ```json5
-    endpoints: [
-      // On lookback: listen on plain TCP for internal Nodes to connect
-      "tcp/localhost:7447",
-      // On external IP: listen on TLS for remote connections
-      "tls/172.1.0.2:7447"
-    ],
+    // ...
+    listen: {
+      // ...
+      endpoints: [
+        // On lookback: listen on plain TCP for internal Nodes to connect
+        "tcp/localhost:7447",
+        // On external IP: listen on TLS for remote connections
+        "tls/172.1.0.2:7447"
+      ],
+      // ...
+    },
+    // ...
     ```
 
 2. Edit the `transport/link/rx/tls` section as such:
 
     ```json5
-    tls: {
-      /// Path to the certificate of the certificate authority ...
-      root_ca_certificate: "/home/ubuntu/container_data/root_ca.crt",
-      /// Path to the TLS listening side private key
-      listen_private_key: "/home/ubuntu/container_data/robot.key",
-      /// Path to the TLS listening side public certificate
-      listen_certificate: "/home/ubuntu/container_data/robot.crt",
-      ///  Enables mTLS (mutual authentication), client authentication
-      enable_mtls: true,
-      /// Path to the TLS connecting side private key
-      connect_private_key: "/home/ubuntu/container_data/robot.key",
-      /// Path to the TLS connecting side certificate
-      connect_certificate: "/home/ubuntu/container_data/robot.crt",
-      // Whether or not to verify the matching between hostname/dns and certificate when connecting ...
-      verify_name_on_connect: false,
-      // ...
-    },
+      tls: {
+        /// Path to the certificate of the certificate authority ...
+        root_ca_certificate: "/home/ubuntu/container_data/root_ca.crt",
+        /// Path to the TLS listening side private key
+        listen_private_key: "/home/ubuntu/container_data/robot.key",
+        /// Path to the TLS listening side public certificate
+        listen_certificate: "/home/ubuntu/container_data/robot.crt",
+        ///  Enables mTLS (mutual authentication), client authentication
+        enable_mtls: true,
+        /// Path to the TLS connecting side private key
+        connect_private_key: "/home/ubuntu/container_data/robot.key",
+        /// Path to the TLS connecting side certificate
+        connect_certificate: "/home/ubuntu/container_data/robot.crt",
+        // Whether or not to verify the matching between hostname/dns and certificate when connecting ...
+        verify_name_on_connect: false,
+        // ...
+      },
     ```
 
 ## RViz configuration
@@ -88,32 +94,38 @@ In control container's `~/container_data/SESSION_CONFIG.json5` file:
 1. Change the `connect/endpoints` list as such:
 
     ```json5
-    endpoints: [
-      // Connect to the robot's router with TLS
-      "tls/172.1.0.2:7447"
-    ],
+    // ...
+    connect: {
+      // ...
+      endpoints: [
+        // Connect to the robot's router with TLS
+        "tls/172.1.0.2:7447"
+      ],
+      // ...
+    },
+    // ...
     ```
 
 2. Edit the `transport/link/rx/tls` section as such:
 
     ```json5
-    tls: {
-      /// Path to the certificate of the certificate authority ...
-      root_ca_certificate: "/home/ubuntu/container_data/root_ca.crt",
-      /// Path to the TLS listening side private key
-      listen_private_key: "/home/ubuntu/container_data/control.key",
-      /// Path to the TLS listening side public certificate
-      listen_certificate: "/home/ubuntu/container_data/control.crt",
-      ///  Enables mTLS (mutual authentication), client authentication
-      enable_mtls: true,
-      /// Path to the TLS connecting side private key
-      connect_private_key: "/home/ubuntu/container_data/control.key",
-      /// Path to the TLS connecting side certificate
-      connect_certificate: "/home/ubuntu/container_data/control.crt",
-      // Whether or not to verify the matching between hostname/dns and certificate when connecting ...
-      verify_name_on_connect: false,
-      // ...
-    },
+      tls: {
+        /// Path to the certificate of the certificate authority ...
+        root_ca_certificate: "/home/ubuntu/container_data/root_ca.crt",
+        /// Path to the TLS listening side private key
+        listen_private_key: "/home/ubuntu/container_data/control.key",
+        /// Path to the TLS listening side public certificate
+        listen_certificate: "/home/ubuntu/container_data/control.crt",
+        ///  Enables mTLS (mutual authentication), client authentication
+        enable_mtls: true,
+        /// Path to the TLS connecting side private key
+        connect_private_key: "/home/ubuntu/container_data/control.key",
+        /// Path to the TLS connecting side certificate
+        connect_certificate: "/home/ubuntu/container_data/control.crt",
+        // Whether or not to verify the matching between hostname/dns and certificate when connecting ...
+        verify_name_on_connect: false,
+        // ...
+      },
     ```
 
 ## Run all
@@ -127,6 +139,9 @@ In control container's `~/container_data/SESSION_CONFIG.json5` file:
 * In the control container, run:
 
   * `just rviz_nav2`
+
+> [!NOTE]
+> When you face a connection issue with the certificate and key, you can check the file permission of the certificate and key. This might happen if your current user id is not aligned with the one inside containers.
 
 ---
 [Next exercise ➡️](ex-6.md)
