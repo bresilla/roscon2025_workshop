@@ -41,7 +41,9 @@ We prepared some commands to perform some measurement on this setup:
 - `just iftop_lo` : show the traffic over the loopback interface (VNC excluded).
 - `just rt_factor` : show the Gazebo real-time factor
 - `just cam_latency` : subscribe to camera's point cloud or image topics and show average latency.  
-   **WARNING**: you must run the simulation to use the wall time as such: `just rox_simu use_wall_time:=True`. However, with this mode Navigation2 is no longer working.
+
+> [!WARNING]
+> you must run the simulation to use the wall time as such: `just rox_simu use_wall_time:=True`. However, with this mode Navigation2 is no longer working.
 
 ---
 [Next exercise ➡️](ex-3.md)

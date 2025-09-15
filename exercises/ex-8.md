@@ -20,7 +20,7 @@ You can easily configure it in your environment with:
 
 > [!Note]
 >
-> *`rmw_zenoh` has not the same [constraints](https://docs.ros.org/en/jazzy/Concepts/Intermediate/About-Domain-ID.html#id4) than DDS for the domain id. Any number up to `MAX_UINT` can be used.
+> `rmw_zenoh` has not the same [constraints](https://docs.ros.org/en/jazzy/Concepts/Intermediate/About-Domain-ID.html#id4) than DDS for the domain id. Any number up to `MAX_UINT` can be used.
 
 ## Configure a Zenoh namespace for each robot
 

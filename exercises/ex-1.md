@@ -31,7 +31,7 @@ By default `rmw_zenoh` uses 2 configuration files:
 You can find those files in the `rmw_zenoh_cpp` installation directory:
 
 - if installed from ROS repositories: `/opt/ros/${ROS_DISTRO}/share/rmw_zenoh_cpp/config/`
-- if built and installed from sources, as is the case for this workshop containers: ` ~/rmw_zenoh/install/rmw_zenoh_cpp/share/rmw_zenoh_cpp/config/`
+- if built and installed from sources, as is the case for this workshop containers: `~/rmw_zenoh/install/rmw_zenoh_cpp/share/rmw_zenoh_cpp/config/`
 
 Have a look to both configuration files, especially to those values:
 

@@ -92,7 +92,7 @@ See the impact on the traffic and check that the points cloud are no longer rece
 
 For further traffic reduction, you can downsample data by lowering the frequency of publications routed to the remote hosts. This approach helps minimize network load while preserving essential information for remote control and supervision.
 
-You can add the following configuration to `ROUTER_CONFIG.json5` for the robot container, which make the frequency of the camera image (The topic is `camera/image_raw`) drop to 1 Hz. After restarting the Zenoh Router, you can see the camera image on the Rviz is obviously lagging
+You can add the following configuration to `ROUTER_CONFIG.json5` for the robot container, which make the frequency of the camera image (The topic is `camera/image_raw`) drop to 1 Hz. After restarting the Zenoh Router, you can see the camera image on the Rviz is obviously lagging.
 
 1. In robot container's `~/container_data/ROUTER_CONFIG.json5` file add this section:
 

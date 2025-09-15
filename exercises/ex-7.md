@@ -27,7 +27,7 @@ Let's experiment this configuration on a simulated WiFi connection connection be
 
 You can see that RViz doesn't receive any camera image.
 
-Now, In robot container's `~/container_data/ROUTER_CONFIG.json5` file, add the following QoS section:
+Now, in robot container's `~/container_data/ROUTER_CONFIG.json5` file, add the following QoS section:
 
    ```json5
    qos: {
