@@ -90,28 +90,28 @@ However, if your remote host only runs one node, you might want to avoid an extr
 
 ## Bonus - shared memory between containers
 
-Share memory between Docker containers can be setup defining a common `tmpfs` type volume for all, mounted as `/dev/shm`. See how it's done the [docker-compose-common-shm.yaml](../docker-compose-common-shm.yaml) file.
+Shared memory between Docker containers can be setup defining a common `tmpfs` type volume for all, mounted as `/dev/shm`. See how it's done the [docker-compose-common-shm.yaml](../docker-compose-common-shm.yaml) file.
 
 You can experiment with this alternative setup of containers as such:
 
 1. Verify that your `roscon2025_workshop/container_volumes/robot_container/SESSION_CONFIG.json5` still has shared memory enabled, following the exercise 3.  
 
 2. On you host, run the containers:  
-   `docker compose up`
+   `docker compose -f docker-compose-common-shm.yaml up`
 
-3. On the robot container on http://localhost:7080/:
+3. On the robot container on http://localhost:7080/
    - Run the router:  
      `just router`
    - Run the simulation using wall time:  
      `just rox_simu use_wall_time:=True`
-4. On the control container on http://localhost:7081/:
+
+4. On the control container on http://localhost:7081/
    - Run the camera latency measure, configured as a client connecting to the robot's router and with shared memory enabled:  
      `ZENOH_CONFIG_OVERRIDE='mode="client";connect/endpoints=["tcp/172.2.0.2:7447"];transport/shared_memory/enabled=true' just cam_latency`
+   - See the latency you get. To compare without shared memory, run:  
+      `ZENOH_CONFIG_OVERRIDE='mode="client";connect/endpoints=["tcp/172.2.0.2:7447"];transport/shared_memory/enabled=false' just cam_latency`
 
-See the latency you get. To compare without shared memory, run:  
-`ZENOH_CONFIG_OVERRIDE='mode="client";connect/endpoints=["tcp/172.2.0.2:7447"];transport/shared_memory/enabled=false' just cam_latency`
-
-When you are finished, just hit `CTRL+C` where you run `docker compose up` command.
+5. When you are finished, just hit `CTRL+C` where you run `docker compose up` command. Then run `docker compose -f docker-compose-common-shm.yaml down`
 
 ---
 [Next exercise ➡️](ex-5.md)
