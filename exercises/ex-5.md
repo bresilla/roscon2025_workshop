@@ -28,15 +28,15 @@ docker run -it --init -v $PWD/tls:/home/step smallstep/step-cli \
   step certificate create --profile root-ca "Example Root CA" root_ca.crt root_ca.key \
   --no-password --insecure
 
-# Create key and certificate for the robot
+# Create key and certificate for the robot (1 year validity)
 docker run -it --init -v $PWD/tls:/home/step smallstep/step-cli \
   step certificate create robot.local robot.crt robot.key \
-  --ca ./root_ca.crt --ca-key ./root_ca.key --no-password --insecure
+  --ca ./root_ca.crt --ca-key ./root_ca.key --no-password --insecure  --not-after=8760h
 
-# Create key and certificate for RVIz
+# Create key and certificate for RVIz (1 year validity)
 docker run -it --init -v $PWD/tls:/home/step smallstep/step-cli \
   step certificate create control.local control.crt control.key \
-  --ca ./root_ca.crt --ca-key ./root_ca.key --no-password --insecure
+  --ca ./root_ca.crt --ca-key ./root_ca.key --no-password --insecure  --not-after=8760h
 
 # Copy root CA certificate and robot's key and certificate to the robot container
 cp ./tls/root_ca.crt ./tls/robot.* ./container_volumes/robot_container/
