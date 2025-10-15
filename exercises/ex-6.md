@@ -120,4 +120,6 @@ You can add the following configuration to `ROUTER_CONFIG.json5` for the robot c
 See the impact on the traffic and check the camera refresh rate in RViz.
 
 ---
+[Solution](solutions/ex-6/) 💡
+
 [Next exercise ➡️](ex-7.md)

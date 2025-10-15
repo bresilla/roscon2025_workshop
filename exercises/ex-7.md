@@ -49,4 +49,6 @@ And restart the robot's router. You should see the images received in RViz now.
 To restore the network back, run `just network_normal`
 
 ---
+[Solution](solutions/ex-7/) 💡
+
 [Next exercise ➡️](ex-8.md)

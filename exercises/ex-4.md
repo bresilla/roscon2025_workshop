@@ -114,4 +114,6 @@ You can experiment with this alternative setup of containers as such:
 5. When you are finished, just hit `CTRL+C` where you run `docker compose up` command. Then run `docker compose -f docker-compose-common-shm.yaml down`
 
 ---
+[Solution](solutions/ex-4/) 💡
+
 [Next exercise ➡️](ex-5.md)

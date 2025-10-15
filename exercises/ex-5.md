@@ -144,4 +144,6 @@ In control container's `~/container_data/SESSION_CONFIG.json5` file:
 > When you face a connection issue with the certificate and key, you can check the file permission of the certificate and key. This might happen if your current user id is not aligned with the one inside containers.
 
 ---
+[Solution](solutions/ex-5/) 💡
+
 [Next exercise ➡️](ex-6.md)

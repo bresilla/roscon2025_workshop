@@ -51,6 +51,10 @@ In robot's container, edit the `~/container_data/ROUTER_CONFIG.json5` file to ma
 
 ---
 
+[Solution](solutions/ex-8/) 💡
+
+---
+
 > [!Tip]
 >
 > For a similar setup but secured via mTLS or QUIC you can rely on the [Zetta Platform](https://www.zettascale.cloud/). This Platform-as-a-Service offering allows you to provision Zenoh router instances in different Cloud regions and to automatically generate the certificates and keys for authentication and encrypted connections.  

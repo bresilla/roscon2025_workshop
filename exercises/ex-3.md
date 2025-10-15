@@ -56,4 +56,6 @@ You can confirm shared memory is enabled by listing the files in `/dev/shm` each
 > *Yes! But first let's see how to establish TCP communication between containers and hosts in the next exercise...*
 
 ---
+[Solution](solutions/ex-3/) 💡
+
 [Next exercise ➡️](ex-4.md)
