@@ -17,7 +17,7 @@ services:
     working_dir: /home/ubuntu
     cap_add:
       - NET_ADMIN
-    shm_size: '512m'
+    shm_size: '640m'
     security_opt:
       - seccomp:unconfined
     networks:
@@ -37,7 +37,7 @@ services:
     working_dir: /home/ubuntu
     cap_add:
       - NET_ADMIN
-    shm_size: '512m'
+    shm_size: '640m'
     security_opt:
       - seccomp:unconfined
     networks:
