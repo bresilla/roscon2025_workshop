@@ -24,17 +24,17 @@ Run those commands on your host:
 mkdir -p tls
 
 # Create root CA
-docker run -it --rm -v $PWD/tls:/home/step smallstep/step-cli \
+docker run -t --rm -v $PWD/tls:/home/step smallstep/step-cli \
   step certificate create --profile root-ca "Example Root CA" root_ca.crt root_ca.key \
   --no-password --insecure
 
 # Create key and certificate for the robot (1 year validity)
-docker run -it --rm -v $PWD/tls:/home/step smallstep/step-cli \
+docker run -t --rm -v $PWD/tls:/home/step smallstep/step-cli \
   step certificate create robot.local robot.crt robot.key \
   --ca ./root_ca.crt --ca-key ./root_ca.key --no-password --insecure  --not-after=8760h
 
 # Create key and certificate for RVIz (1 year validity)
-docker run -it --rm -v $PWD/tls:/home/step smallstep/step-cli \
+docker run -t --rm -v $PWD/tls:/home/step smallstep/step-cli \
   step certificate create control.local control.crt control.key \
   --ca ./root_ca.crt --ca-key ./root_ca.key --no-password --insecure  --not-after=8760h
 
