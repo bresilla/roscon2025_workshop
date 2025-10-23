@@ -23,6 +23,11 @@ services:
     networks:
       sim_network:
         ipv4_address: 172.1.0.2
+    # By default, Ubuntu supports 8192 KiB, which is not enough for Zenoh shared memory
+    ulimits:
+      memlock:
+        soft: -1  # "unlimited"
+        hard: -1  # "unlimited"
 
   # Controller container
   control:
@@ -43,6 +48,11 @@ services:
     networks:
       sim_network:
         ipv4_address: 172.1.0.3
+    # By default, Ubuntu supports 8192 KiB, which is not enough for Zenoh shared memory
+    ulimits:
+      memlock:
+        soft: -1  # "unlimited"
+        hard: -1  # "unlimited"
 
 networks:
   # Custom bridge network with a specific subnet
