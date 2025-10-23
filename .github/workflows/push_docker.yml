@@ -39,11 +39,21 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USER }}
           password: ${{ secrets.DOCKER_HUB_TOKEN }}
 
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Build and push AMD64 image
         run: |
           set -xe
           docker build docker -f docker/Dockerfile -t zettascaletech/roscon2025_workshop-amd64:${{ inputs.tag }} --no-cache --platform linux/amd64
           docker push zettascaletech/roscon2025_workshop-amd64:${{ inputs.tag }}
+          # Tag and push also to GHCR
+          docker tag zettascaletech/roscon2025_workshop-amd64:${{ inputs.tag }} ghcr.io/ZettaScaleLabs/roscon2025_workshop-amd64:${{ inputs.tag }}
+          docker push ghcr.io/ZettaScaleLabs/roscon2025_workshop-amd64:${{ inputs.tag }}
 
   docker-build-arm64:
     name: Docker ARM64 build and push
@@ -62,6 +72,9 @@ jobs:
           set -xe
           docker build docker -f docker/Dockerfile -t zettascaletech/roscon2025_workshop-arm64:${{ inputs.tag }} --no-cache --platform linux/arm64/v8
           docker push zettascaletech/roscon2025_workshop-arm64:${{ inputs.tag }}
+          # Tag and push to GHCR
+          docker tag zettascaletech/roscon2025_workshop-arm64:${{ inputs.tag }} ghcr.io/ZettaScaleLabs/roscon2025_workshop-arm64:${{ inputs.tag }}
+          docker push ghcr.io/ZettaScaleLabs/roscon2025_workshop-arm64:${{ inputs.tag }}
 
   docker-build-manifest:
     name: Docker manifest build and push
@@ -87,6 +100,11 @@ jobs:
             zettascaletech/roscon2025_workshop-amd64:${{ inputs.tag }} \
             zettascaletech/roscon2025_workshop-arm64:${{ inputs.tag }}
           docker manifest push zettascaletech/roscon2025_workshop:${{ inputs.tag }}
+          # Create and push GHCR manifest
+          docker manifest create --amend ghcr.io/ZettaScaleLabs/roscon2025_workshop:${{ inputs.tag }} \
+            ghcr.io/ZettaScaleLabs/roscon2025_workshop-amd64:${{ inputs.tag }} \
+            ghcr.io/ZettaScaleLabs/roscon2025_workshop-arm64:${{ inputs.tag }}
+          docker manifest push ghcr.io/ZettaScaleLabs/roscon2025_workshop:${{ inputs.tag }}
 
       - name: Tag and push as latest
         if: ${{ inputs.latest }}
@@ -97,3 +115,9 @@ jobs:
             zettascaletech/roscon2025_workshop-amd64:${{ inputs.tag }} \
             zettascaletech/roscon2025_workshop-arm64:${{ inputs.tag }}
           docker manifest push zettascaletech/roscon2025_workshop:latest
+          # Tag and push GHCR latest
+          docker manifest rm ghcr.io/ZettaScaleLabs/roscon2025_workshop:latest || true
+          docker manifest create ghcr.io/ZettaScaleLabs/roscon2025_workshop:latest \
+            ghcr.io/ZettaScaleLabs/roscon2025_workshop-amd64:${{ inputs.tag }} \
+            ghcr.io/ZettaScaleLabs/roscon2025_workshop-arm64:${{ inputs.tag }}
+          docker manifest push ghcr.io/ZettaScaleLabs/roscon2025_workshop:latest
