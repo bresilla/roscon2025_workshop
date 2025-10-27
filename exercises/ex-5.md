@@ -65,7 +65,7 @@ In robot container's `~/container_data/ROUTER_CONFIG.json5` file:
     // ...
     ```
 
-2. Edit the `transport/link/rx/tls` section as such:
+2. Edit the `transport/link/tls` section as such:
 
     ```json5
       tls: {
@@ -106,7 +106,7 @@ In control container's `~/container_data/SESSION_CONFIG.json5` file:
     // ...
     ```
 
-2. Edit the `transport/link/rx/tls` section as such:
+2. Edit the `transport/link/tls` section as such:
 
     ```json5
       tls: {
